@@ -17,7 +17,7 @@ export default class Calendario extends Component {
          backgroundColor = '#B9C941'
         />
         {/*<BarraNavegacao voltar navigator={this.props.navigator} corDeFundo='#B9C941'/>*/}
-        <Text>Calendario</Text>
+        <Text>Iup!!! Mas não usaremos essa navegação, ela está em desuso!!! Foi descontinuada, mas da pra testar nossas telas rs</Text>
     </View>
     );
   }

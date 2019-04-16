@@ -13,7 +13,7 @@ import { Navigator } from 'react-native-deprecated-custom-components';
 
 import CenaPrincipal from './src/components/CenaPrincipal';
 import Calendario from './src/components/Calendario';
-import TelaDia from './src/screens/TelaDia';
+//import TelaDia from './src/screens/TelaDia';
 
 
 export default class App extends Component{
@@ -27,8 +27,8 @@ export default class App extends Component{
               return (<CenaPrincipal navigator={navigator}/>);
             case 'Calendario':
               return (<Calendario navigator={navigator}/>);
-            case 'TelaDia':
-              return (<TelaDia navigator={navigator}/>);
+            //case 'TelaDia':
+             // return (<TelaDia navigator={navigator}/>);
             default:
               return false;
           }

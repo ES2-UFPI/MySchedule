@@ -29,13 +29,13 @@ export default class CenaPrincipal extends Component {
                         <Text>Calendario</Text>
                     </TouchableHighlight>
 
-                    <TouchableHighlight
+                    {/*<TouchableHighlight
                         onPress={() =>{
                             this.props.navigator.push({id: 'TelaDia'});
                         }}
                     >
                     <Text>Dias</Text>
-                    </TouchableHighlight>
+                    </TouchableHighlight>*/}
                 </View>
             </View>   
       </View>
