@@ -9,7 +9,9 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import { Navigator } from 'react-native-deprecated-custom-components';
 
+import CenaPrincipal from './src/components/CenaPrincipal';
 import Calendario from './src/components/Calendario';
 import TelaDia from './src/screens/TelaDia';
 

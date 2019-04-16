@@ -4,10 +4,11 @@ import {
     StatusBar,
     Image,
     StyleSheet,
-    TouchableHighlight
+    TouchableHighlight,
+    Text
 } from 'react-native';
 
-import BarraNavegacao from './BarraNavegacao';
+//import BarraNavegacao from './BarraNavegacao';
 
 
 export default class CenaPrincipal extends Component {
@@ -17,10 +18,8 @@ export default class CenaPrincipal extends Component {
         <StatusBar
          backgroundColor = '#ccc'
         />
-        <BarraNavegacao  />
+        {/*<BarraNavegacao  />*/}
         <View>
-            
-
                 <View>
                     <TouchableHighlight
                         onPress={() =>{

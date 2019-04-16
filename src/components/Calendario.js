@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 
-import BarraNavegacao from './BarraNavegacao';
+//import BarraNavegacao from './BarraNavegacao';
 
 export default class Calendario extends Component {
   render() {
@@ -16,7 +16,7 @@ export default class Calendario extends Component {
         <StatusBar
          backgroundColor = '#B9C941'
         />
-        <BarraNavegacao voltar navigator={this.props.navigator} corDeFundo='#B9C941'/>
+        {/*<BarraNavegacao voltar navigator={this.props.navigator} corDeFundo='#B9C941'/>*/}
         <Text>Calendario</Text>
     </View>
     );

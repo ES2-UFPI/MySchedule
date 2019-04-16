@@ -21,13 +21,13 @@ export default class BarraNavegacao extends Component {
                 >
                     <Image source={btnVoltar}/>
                 </TouchableHighlight>
-                <Text style={styles.titulo}>ATM Consultoria</Text>
+                <Text style={styles.titulo}>MySchedule</Text>
             </View>
         ); 
     }
     return (
         <View style={styles.barraTitulo}>
-            <Text style={styles.titulo}>ATM Consultoria</Text>
+            <Text style={styles.titulo}>MySchedule</Text>
         </View>
     );
   }
