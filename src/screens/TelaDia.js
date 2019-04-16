@@ -9,7 +9,7 @@ import {
 
 import BarraNavegacao from './BarraNavegacao';
 
-export default class Calendario extends Component {
+export default class TelaDia extends Component {
   render() {
     return (
     <View style={{flex: 1, backgroundColor: '#FFF'}}>
@@ -17,9 +17,8 @@ export default class Calendario extends Component {
          backgroundColor = '#B9C941'
         />
         <BarraNavegacao voltar navigator={this.props.navigator} corDeFundo='#B9C941'/>
-        <Text>Calendario</Text>
+        <Text>TelaDia</Text>
     </View>
     );
   }
 }
-
