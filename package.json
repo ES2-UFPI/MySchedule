@@ -8,10 +8,16 @@
   },
   "dependencies": {
     "react": "16.8.3",
+    "react-contexify": "^4.1.0",
     "react-native": "0.59.4",
+    "react-native-action-button": "^2.8.5",
+    "react-native-material-menu": "^0.4.2",
+    "react-native-modal-datetime-picker": "^7.4.0",
+    "react-native-popup-menu": "^0.15.6",
     "react-native-deprecated-custom-components": "^0.1.2",
     "react-native-gesture-handler": "^1.1.0",
     "react-navigation": "^3.8.1"
+
   },
   "devDependencies": {
     "@babel/core": "7.4.3",
