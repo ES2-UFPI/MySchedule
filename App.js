@@ -8,7 +8,7 @@ import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/components/TelaCadastroAtividade';
 
 const navigator = createStackNavigator({
-  home: CadastroAtividade,
+  home: Dias,
   calendario: Calendario,
   semanas: Semanas,
   cadastroAtividade: CadastroAtividade
