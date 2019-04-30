@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import Calendario from './src/components/Calendario';
-//import Dias from './src/components/dias';
+import Dias from './src/components/dias.js';
 import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/components/TelaCadastroAtividade';
 
