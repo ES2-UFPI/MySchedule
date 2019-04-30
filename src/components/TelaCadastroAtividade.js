@@ -12,7 +12,7 @@ import {
   } from 'react-native';
 
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu'
-import Imagem from '../imgs/office.jpg'
+import Imagem from '../../imagens/office.jpg'
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 export  class DateTimePickerTester extends Component {
