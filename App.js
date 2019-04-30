@@ -11,7 +11,7 @@ const navigator = createStackNavigator({
   home: Dias,
   calendario: Calendario,
   semanas: Semanas,
-  cadastroAtividade: CadastroAtividade
+  //cadastroAtividade: CadastroAtividade
 })
 const App = createAppContainer(navigator);
 
