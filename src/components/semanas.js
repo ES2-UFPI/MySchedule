@@ -8,7 +8,7 @@ export default class Semansas extends React.Component {
 
         <View style={{alignItems: "center",flex: 1}}><Text>Semanas</Text>
       <View style={{   justifyContent: "center" }}>
-        <Button onPress={() => this.props.navigation.navigate('home')} title="Dias"></Button> 
+        <Button onPress={() => this.props.navigation.navigate('dias')} title="Dias"></Button> 
       </View>
       </View>
     );
