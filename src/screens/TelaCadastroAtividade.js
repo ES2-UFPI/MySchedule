@@ -176,7 +176,7 @@ export default class CadastroAtividade extends Component{
 
           </View>
         
-        <Button  onPress={() => this.props.navigation.navigate('semanas')} title="Semanas"></Button> 
+        <Button  onPress={() => this.props.navigation.navigate('atividades')} title="Semanas"></Button> 
 
         </View>
         

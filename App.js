@@ -6,13 +6,15 @@ import Calendario from './src/components/Calendario';
 import Dias from './src/components/dias';
 import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/screens/TelaCadastroAtividade'
+import ListaAtividade from './src/components/ListaAtividades'
 
 
 const navigator = createStackNavigator({
   home: CadastroAtividade,
   calendario: Calendario,
   semanas: Semanas,
-  dias: Dias
+  dias: Dias,
+  atividades: ListaAtividade
   
 })
 const App = createAppContainer(navigator);
