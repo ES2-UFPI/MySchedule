@@ -3,19 +3,7 @@
  */
 
 import {AppRegistry} from 'react-native';
-import App from './src/screens/TelaCadastroAtividade';
+//import CadastroAtividade from './src/screens/TelaCadastroAtividade';
 import {name as appName} from './app.json';
-//import Navigator from "./src/components";
-
-//const App = createAppContainer(Navigator.StackNavigator);
-
+import App from './App'
 AppRegistry.registerComponent(appName, () => App);
-
-
-
-
-
-
-
-
-
