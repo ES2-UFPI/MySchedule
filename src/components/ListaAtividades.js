@@ -4,7 +4,7 @@ import {
   View,
   Button,
   StyleSheet,
-  
+  FlatList,
   Text
 } from 'react-native';
 import axios from 'axios';
@@ -19,7 +19,8 @@ export default class ListaAtividade extends Component {
     this.state = {
      // listaAtividade: [{ "nome": "Banhar", "dia": "23/12/19", "hora": "14:30", "descricao": "Banhar peladim" },
       //{ "nome": "Ir ali", "dia": "25/03/19", "hora": "9:35", "descricao": "Ir naquele lugar" },],
-      desc:'',frequencia:'',dificuldade:'',data:new Date()
+      //desc:'',frequencia:'',dificuldade:'',data:new Date(),
+      atv:[]
     }
   }
 
@@ -33,12 +34,20 @@ export default class ListaAtividade extends Component {
     try {
       let value = await AsyncStorage.getItem('descricao');
       let parsed = JSON.parse(value)
-      //alert(parsed.descricao)
-      //alert(parsed.frequencia)
+
+      const task=[...this.state.atv]
+      task.push({
+        desc: parsed.descricao,
+        frequencia: parsed.frequencia,
+        dificuldade:parsed.dificuldade,
+        data:parsed.data,
+      })
+      this.setState({avt:task})
+        /*
       this.setState({desc:parsed.descricao})
       this.setState({frequencia:parsed.frequencia})
       this.setState({dificuldade:parsed.dificuldade})
-      this.setState({data:parsed.data})
+      this.setState({data:parsed.data})*/
     } catch (error) {
       // Error retrieving data
       alert('eroo')
@@ -58,15 +67,17 @@ export default class ListaAtividade extends Component {
          
         </ScrollView>
         <View>
-          
+         
           <Button onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} title="Nova Atividade"> </Button>
           <Button onPress={this.RecuperarData} title='recuperaar'></Button>
           <Text>
-                {this.state.desc}
-                {this.state.dificuldade}
-                {this.state.frequencia}
-                {this.state.date}
+                {this.state.atv.desc}
+               
           </Text>
+          <FlatList
+            data={this.state.atv}
+            keyExtractor={item=>item.desc}
+            renderItem={({item})=><Text>{item.desc}</Text>}   />
         </View>
       </View>
       

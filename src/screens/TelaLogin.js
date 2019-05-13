@@ -7,6 +7,10 @@ const { width: WIDTH } = Dimensions.get('window')
 
 export default class TelaLogin extends Component 
 {
+    Entrar = () => {
+        this.props.navigation.navigate('home')
+    }  
+
 	render ()
 	{
 		return (
@@ -33,7 +37,10 @@ export default class TelaLogin extends Component
                         returnKeyType = 'go'
                         ref = {(input) => this.passwordInput = input}
                     />
-                    <TouchableOpacity style={Styles.button}>
+                    <TouchableOpacity 
+                        style = {Styles.button}
+                        onPress = {this.Entrar}
+                    >
                         <Text style={Styles.buttonText}>Entrar</Text>
                     </TouchableOpacity>
                     </View>
@@ -66,7 +73,8 @@ const Styles = StyleSheet.create({
         borderRadius: 25,
         fontSize: 16,
         marginTop: 15,
-        elevation: 1
+        elevation: 1,
+        backgroundColor: '#fff'
     },
     formContainer:
     {

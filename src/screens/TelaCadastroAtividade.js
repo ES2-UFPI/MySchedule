@@ -1,29 +1,27 @@
 
 import React, {Component} from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
   TextInput,
   ImageBackground,
-  Button,
   DatePickerAndroid,
   TimePickerAndroid,
   TouchableOpacity,
-  
-
+  Alert,
   } from 'react-native';
 
 import moment from 'moment'
 import Imagem from '../imgs/office.jpg'
-import { Dropdown } from 'react-native-material-dropdown';
-import AsyncStorage from '@react-native-community/async-storage';
+import { Dropdown } from 'react-native-material-dropdown'
+import AsyncStorage from '@react-native-community/async-storage'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import 'moment/locale/pt-br'
 
 class Frequencia extends Component {
   constructor(props){
     super(props)
-    
   }
   render() {
     let data = [{
@@ -56,7 +54,7 @@ class Dificuldade extends Component {
       value: 'Difícil',
     }];
     return (
-      <Dropdown value={this.props.def} onChangeText={this.props.mudar}
+      <Dropdown value={this.props.dif} onChangeText={this.props.mudar}
         label='Dificuldade'
         data={data}
       />
@@ -64,18 +62,15 @@ class Dificuldade extends Component {
   }
 }
 
+const estadoInicial={desc:'',date: new Date(),frequencia:'Não se repete',dificuldade:'',}
 export default class CadastroAtividade extends Component{
   
   constructor(props){
     super(props)
     this.state= {
-   
-    desc:'',
-    date: new Date(),
-    frequencia:'',
-    dificuldade:''
+   ...estadoInicial
   }
-  }
+}
 
   handleDateAndroidChanged=()=>{
         DatePickerAndroid.open({
@@ -93,7 +88,7 @@ export default class CadastroAtividade extends Component{
   
   handleTimeAndroidChanged=()=>{
     TimePickerAndroid.open({
-      date: this.state.date.getHours
+      date: this.state.date
     }).then(e =>{
         if(e.action!==TimePickerAndroid.dismissedAction){
         const momentDate = moment(this.state.date)
@@ -104,14 +99,46 @@ export default class CadastroAtividade extends Component{
     })
 }
 
-  mudarfrequencia=freq=>{
-    this.setState({frequencia:freq})
+  mudarfrequencia=frequencia=>{
+    this.setState({frequencia})
   }
-  mudarDificuldade=dif=>{
-    this.setState({dificuldade:dif})
+  mudarDificuldade=dificuldade=>{
+    this.setState({dificuldade})
+  }
+
+  validarDados=()=>{
+    if(!this.state.desc.trim()){
+      Alert.alert(
+        'Descrição vazia!',
+        'Informe Uma Descrição',)
+        return false
+    }
+        let ano = this.state.date.getYear()+1900
+        let mes = this.state.date.getMonth()+1
+        let dia = this.state.date.getDate()
+        let x=new Date()
+
+    if( (parseInt(dia) < x.getDate() && parseInt(mes)==parseInt(x.getMonth()+1) && parseInt(ano)==parseInt(x.getYear()+1900)) 
+      || (parseInt(ano)<parseInt(x.getYear()+1900)) 
+      || (parseInt(mes) < parseInt(x.getMonth()+1) && parseInt(ano)==parseInt(x.getYear()+1900)  )){
+          Alert.alert(
+            'Data Inválida!',
+            'Digite uma data válida',)
+            return false
+      }
+    if( (parseInt(this.state.date.getHours()) < parseInt(x.getHours()) && parseInt(dia) == x.getDate())
+      ||(parseInt(this.state.date.getMinutes()) < parseInt(x.getMinutes()) &&  parseInt(this.state.date.getHours()) == parseInt(x.getHours()) )  ){
+        Alert.alert(
+          'Hora Inválida!',
+          'Digite uma hora válida',)
+          return false
+      }
+
+           return true
   }
 
   salvarDados=()=>{
+    if(this.validarDados()){
     let obj={
        descricao: this.state.desc,
        frequencia: this.state.frequencia,
@@ -120,14 +147,15 @@ export default class CadastroAtividade extends Component{
 
     }
     AsyncStorage.setItem("descricao",JSON.stringify(obj))
+
+    this.setState({...estadoInicial})
     this.props.navigation.navigate('home')
-   
+    }
   }
 
   render() {
     
     return (
-      
         <View style={styles.container}>
 
         <ImageBackground
@@ -149,18 +177,22 @@ export default class CadastroAtividade extends Component{
 
         <TouchableOpacity style={styles.button} onPress={this.handleDateAndroidChanged}>
           <Text style = {styles.buttonText}>
-            {moment(this.state.date).format('ddd, D [de] MMMM [de] YYYY')}
+            <Icon name='calendar' size={15} ></Icon>
+                {moment(this.state.date).locale('pt-br').format('   ddd, D [de] MMMM')}
           </Text>
         </TouchableOpacity>
-
+       
         <TouchableOpacity style={styles.button} onPress={this.handleTimeAndroidChanged}>
           <Text style = {styles.buttonText}>
-            {moment(this.state.date).format('hh : mm a ')}
+          <Icon name='clock-o' size={15} ></Icon>
+              {moment(this.state.date).format('   HH : mm')}
           </Text>
         </TouchableOpacity>
         
-          
-        <Button title='Salvar' onPress={this.salvarDados}></Button>
+        <TouchableOpacity style={styles.button2}
+                          onPress={this.salvarDados}>
+                          <Text style={styles.botaoSalvar}>Salvar</Text>
+        </TouchableOpacity>
         </View>
         
         </View>
@@ -190,42 +222,39 @@ const styles = StyleSheet.create({
     color:'#000000',
   },
   input:{
-    /*
-    fontSize: 25,
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-around',
-    marginVertical: 15,
-    width:'100%'*/
-    textAlign: 'center',
+        textAlign: 'center',
         borderRadius: 25,
         fontSize: 16,
         marginTop: 15,
         elevation: 1,
         backgroundColor:'#fff'
   },
-  opcao:{
-    borderColor:'black',
-    alignItems:'flex-start',
-    marginHorizontal:10,
-    justifyContent:'center',
-},
-telabotao:{
-    marginVertical:20,
-    marginHorizontal:10
-},
-button:
-    {
+button:{
         alignItems: 'center',
         height: 45,
         marginTop: 20,
         elevation: 1,
         backgroundColor:'#fff'
     },
-    buttonText:
-    {
-        //color: '#fff',
-        //fontSize: 16,
-        marginTop: 10
+button2:{
+        alignItems: 'center',
+        height: 45,
+        marginTop: 20,
+        borderRadius: 25,
+        elevation: 1,
+        backgroundColor:'#21409a'
+},
+buttonText:{
+    //color: '#fff',
+    //fontSize: 16,
+    //alignItems:'center',
+    //textAlign:'justify',
+     //marginTop: 10
+     padding:10
     },
+botaoSalvar:{
+   color:'white',
+   padding:8,
+   fontSize: 20,
+}
 });
