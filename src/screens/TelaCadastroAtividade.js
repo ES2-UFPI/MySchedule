@@ -1,236 +1,260 @@
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
   TextInput,
   ImageBackground,
-  Button,
-  TouchableOpacity
+  DatePickerAndroid,
+  TimePickerAndroid,
+  TouchableOpacity,
+  Alert,
+  } from 'react-native';
 
-} from 'react-native';
-
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu'
+import moment from 'moment'
 import Imagem from '../imgs/office.jpg'
-import DateTimePicker from "react-native-modal-datetime-picker";
+import { Dropdown } from 'react-native-material-dropdown'
+import AsyncStorage from '@react-native-community/async-storage'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import 'moment/locale/pt-br'
 
-export class DateTimePickerTester extends Component {
-  state = {
-    isDateTimePickerVisible: false
+class Frequencia extends Component {
+  constructor(props){
+    super(props)
   }
-
-  showDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: true });
-  };
-
-  hideDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: false });
-  };
-
-  handleDatePicked = date => {
-    console.log("A date has been picked: ", date);
-    this.hideDateTimePicker();
-  };
-
   render() {
+    let data = [{
+      value: 'Diario',
+    }, {
+      value: 'Semanal',
+    }, {
+      value: 'Mensal',
+    },{
+      value: 'Anual',
+    },{
+      value: 'Não se repete'
+    }];
     return (
-      <>
-        <Button title="Selecionar Data e hora" onPress={this.showDateTimePicker} />
-        <DateTimePicker
-          isVisible={this.state.isDateTimePickerVisible}
-          onConfirm={this.handleDatePicked}
-          onCancel={this.hideDateTimePicker}
-          mode={'datetime'}
-        />
-      </>
-
+      <Dropdown value={this.props.freq} onChangeText={this.props.mudar}
+        label='Frequencia'
+        data={data}
+      />
     );
   }
 }
 
-export class Prioridade extends React.PureComponent {
-  _menu = null;
-
-  setMenuRef = ref => {
-    this._menu = ref;
-  };
-
-  hideMenu = () => {
-    this._menu.hide();
-  };
-
-  showMenu = () => {
-    this._menu.show();
-  };
-
-
-  constructor(props) {
-    super(props);
-    this.state = { texto: 'Dificuldade' };
-  }
-  alterarTexto = (a) => {
-    this.setState({ texto: a }, this.hideMenu)
-
-  }
-
+class Dificuldade extends Component {
   render() {
+    let data = [{
+      value: 'Fácil',
+    }, {
+      value: 'Médio',
+    }, {
+      value: 'Difícil',
+    }];
     return (
-
-      <View style={styles.opcao} >
-        <Menu
-          ref={this.setMenuRef}
-          button={<Text style={{ fontSize: 25 }} onPress={this.showMenu}>{this.state.texto}</Text>}
-        >
-
-          <MenuItem onPress={() => this.alterarTexto('Fácil')} >Fácil</MenuItem>
-          <MenuItem onPress={() => this.alterarTexto('Médio')} >Médio</MenuItem>
-          <MenuItem onPress={() => this.alterarTexto('Difícil')} >Difícil</MenuItem>
-
-
-        </Menu>
-      </View>
+      <Dropdown value={this.props.dif} onChangeText={this.props.mudar}
+        label='Dificuldade'
+        data={data}
+      />
     );
   }
 }
 
-export class Frequencia extends React.PureComponent {
-  _menu = null;
-
-  setMenuRef = ref => {
-    this._menu = ref;
-  };
-
-  hideMenu = () => {
-    this._menu.hide();
-  };
-
-  showMenu = () => {
-    this._menu.show();
-  };
-
-
-  constructor(props) {
-    super(props);
-    this.state = { texto: 'Frequencia' };
-  }
-  alterarTexto = (a) => {
-    this.setState({ texto: a }, this.hideMenu)
-
-  }
-
-  render() {
-    return (
-
-      <View style={styles.opcao} >
-        <Menu
-          ref={this.setMenuRef}
-          button={<Text style={{ fontSize: 25 }} onPress={this.showMenu}>{this.state.texto}</Text>}
-        >
-
-          <MenuItem onPress={() => this.alterarTexto('Diario')} >Diario</MenuItem>
-          <MenuItem onPress={() => this.alterarTexto('Semanal')}  >Semanal</MenuItem>
-          <MenuItem onPress={() => this.alterarTexto('Mensal')} >Mensal</MenuItem>
-          {/*<MenuDivider />*/}
-          <MenuItem onPress={() => this.alterarTexto('Anual')} >Anual</MenuItem>
-          <MenuItem onPress={() => this.alterarTexto('Não se repete')} >Nao se repete</MenuItem>
-        </Menu>
-      </View>
-    );
+const estadoInicial={desc:'',date: new Date(),frequencia:'Não se repete',dificuldade:'',}
+export default class CadastroAtividade extends Component{
+  
+  constructor(props){
+    super(props)
+    this.state= {
+   ...estadoInicial
   }
 }
 
-export default class CadastroAtividade extends Component {
+  handleDateAndroidChanged=()=>{
+        DatePickerAndroid.open({
+          date: this.state.date
+        }).then(e =>{
+            if(e.action!==DatePickerAndroid.dismissedAction){
+            const momentDate = moment(this.state.date)
+            momentDate.date(e.day)
+            momentDate.month(e.month)
+            momentDate.year(e.year)
+            this.setState({date: momentDate.toDate()})
+            }
+        })
+  }
+  
+  handleTimeAndroidChanged=()=>{
+    TimePickerAndroid.open({
+      date: this.state.date
+    }).then(e =>{
+        if(e.action!==TimePickerAndroid.dismissedAction){
+        const momentDate = moment(this.state.date)
+        momentDate.hours(e.hour)
+        momentDate.minute(e.minute)
+        this.setState({date: momentDate.toDate()})
+        }
+    })
+}
+
+  mudarfrequencia=frequencia=>{
+    this.setState({frequencia})
+  }
+  mudarDificuldade=dificuldade=>{
+    this.setState({dificuldade})
+  }
+
+  validarDados=()=>{
+    if(!this.state.desc.trim()){
+      Alert.alert(
+        'Descrição vazia!',
+        'Informe Uma Descrição',)
+        return false
+    }
+        let ano = this.state.date.getYear()+1900
+        let mes = this.state.date.getMonth()+1
+        let dia = this.state.date.getDate()
+        let x=new Date()
+
+    if( (parseInt(dia) < x.getDate() && parseInt(mes)==parseInt(x.getMonth()+1) && parseInt(ano)==parseInt(x.getYear()+1900)) 
+      || (parseInt(ano)<parseInt(x.getYear()+1900)) 
+      || (parseInt(mes) < parseInt(x.getMonth()+1) && parseInt(ano)==parseInt(x.getYear()+1900)  )){
+          Alert.alert(
+            'Data Inválida!',
+            'Digite uma data válida',)
+            return false
+      }
+    if( (parseInt(this.state.date.getHours()) < parseInt(x.getHours()) && parseInt(dia) == x.getDate())
+      ||(parseInt(this.state.date.getMinutes()) < parseInt(x.getMinutes()) &&  parseInt(this.state.date.getHours()) == parseInt(x.getHours()) )  ){
+        Alert.alert(
+          'Hora Inválida!',
+          'Digite uma hora válida',)
+          return false
+      }
+
+           return true
+  }
+
+  salvarDados=()=>{
+    if(this.validarDados()){
+    let obj={
+       descricao: this.state.desc,
+       frequencia: this.state.frequencia,
+       dificuldade: this.state.dificuldade,
+       data:this.state.date
+
+    }
+    AsyncStorage.setItem("descricao",JSON.stringify(obj))
+
+    this.setState({...estadoInicial})
+    this.props.navigation.navigate('home')
+    }
+  }
 
   render() {
+    
     return (
-
-      <View style={styles.container}>
+        <View style={styles.container}>
 
         <ImageBackground
-          source={Imagem}
-          style={styles.background}>
-          <Text style={styles.texto1}>Nova Atividade</Text>
+            source={Imagem}
+            style={styles.background}>
+            <Text style={styles.texto1}>Nova Atividade</Text>
         </ImageBackground>
 
         <View style={styles.tela}>
-          <TextInput style={styles.input}
-            placeholder="Descricão"
-          />
-          {/*<Text style={styles.input}>Dias da semana</Text>*/}
+        <TextInput style={styles.input} 
+                    placeholder="Descricão" 
+                    onChangeText={desc=>this.setState({desc})}
+                    value={this.state.desc}
+                    returnKeyType = 'go'/>
+        
+              <Frequencia  freq = {this.state.frequencia} mudar={this.mudarfrequencia}></Frequencia>
+              <Dificuldade dif = {this.state.dificuldade} mudar={this.mudarDificuldade}></Dificuldade>
+      
 
-          <View style={styles.input}  >
-            <Frequencia></Frequencia>
-            <Prioridade></Prioridade>
-          </View>
-
-
-
-          <View style={styles.telabotao}>
-
-
-            <DateTimePickerTester></DateTimePickerTester>
-
-
-          </View>
-
+        <TouchableOpacity style={styles.button} onPress={this.handleDateAndroidChanged}>
+          <Text style = {styles.buttonText}>
+            <Icon name='calendar' size={15} ></Icon>
+                {moment(this.state.date).locale('pt-br').format('   ddd, D [de] MMMM')}
+          </Text>
+        </TouchableOpacity>
+       
+        <TouchableOpacity style={styles.button} onPress={this.handleTimeAndroidChanged}>
+          <Text style = {styles.buttonText}>
+          <Icon name='clock-o' size={15} ></Icon>
+              {moment(this.state.date).format('   HH : mm')}
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.button2}
+                          onPress={this.salvarDados}>
+                          <Text style={styles.botaoSalvar}>Salvar</Text>
+        </TouchableOpacity>
         </View>
-
-      </View>
-
-
+        
+        </View>
+      
     );
   }
 }
 
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container:{
+      flex:1,
   },
-  background: {
-    flex: 2,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
+  background:{
+      flex:2,
+      alignItems:'flex-start',
+      justifyContent:'center',
   },
-  tela: {
-    flex: 8
+  tela:{
+    flex:8 ,
+    paddingHorizontal:30
   },
-
-  texto1: {
-    fontSize: 35,
-    textAlign: 'center',
-    marginVertical: 15,
-    color: '#000000',
-
-
+  
+  texto1:{
+    fontSize:35,
+    textAlign:'center',
+    marginVertical:15,
+    color:'#000000',
   },
-  input: {
-
-    fontSize: 25,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginVertical: 15,
-    //padding:20,
-    //height:50,
-    //marginHorizontal:10,
-    width: '100%'
+  input:{
+        textAlign: 'center',
+        borderRadius: 25,
+        fontSize: 16,
+        marginTop: 15,
+        elevation: 1,
+        backgroundColor:'#fff'
   },
-  opcao: {
-
-    borderColor: 'black',
-    alignItems: 'flex-start',
-    marginHorizontal: 10,
-    justifyContent: 'center',
-  },
-  telabotao: {
-    marginVertical: 20,
-    marginHorizontal: 10
-  }
-
-
-
-
+button:{
+        alignItems: 'center',
+        height: 45,
+        marginTop: 20,
+        elevation: 1,
+        backgroundColor:'#fff'
+    },
+button2:{
+        alignItems: 'center',
+        height: 45,
+        marginTop: 20,
+        borderRadius: 25,
+        elevation: 1,
+        backgroundColor:'#21409a'
+},
+buttonText:{
+    //color: '#fff',
+    //fontSize: 16,
+    //alignItems:'center',
+    //textAlign:'justify',
+     //marginTop: 10
+     padding:10
+    },
+botaoSalvar:{
+   color:'white',
+   padding:8,
+   fontSize: 20,
+}
 });

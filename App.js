@@ -7,51 +7,7 @@ import Dias from './src/components/dias';
 import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/screens/TelaCadastroAtividade'
 import ListaAtividade from './src/components/ListaAtividades'
-
-/*
-const Routes = createAppContainer(
-  createDrawerNavigator({
-    Home: ListaAtividade,
-    About: Dias,
-  })
-);
-
-export default Routes;
-*/
-
-
-/*
-
-const Drawer = DrawerNavigator({
-  HomeDrawer: {
-    screen: ListaAtividade
-  },
-  SettingsDrawer:{
-    screen: Dias
-  }
-});
-const App = StackNavigator({
-  Drawer: {
-    screen: Drawer,
-  },
-  Home: {
-    screen: ListaAtividade
-  },
-  Settings: {
-    screen: Dias
-  },
-  View: { screen: ListaAtividade},
-})
-
-export default App;
-
-*/
-
-
-
-
-
-
+import Login from './src/components/login'
 
 
 const navigator = createDrawerNavigator({
@@ -60,8 +16,8 @@ const navigator = createDrawerNavigator({
   semanas: Semanas,
   dias: Dias,
   atividades: ListaAtividade,
-  cadastroDeAtividade: CadastroAtividade
-  
+  cadastroDeAtividade: CadastroAtividade,
+  login: Login
 })
 const App = createAppContainer(navigator);
 
