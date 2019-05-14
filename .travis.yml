@@ -18,6 +18,9 @@ matrix:
         - yes | sdkmanager "platforms;android-28"
         - yes | sdkmanager "build-tools;28.0.3"
       script:
+        - "cd android"
+        - "gradlew clean"
+        - "gradlew assembleRelease"
         - "./android/gradlew assembleRelease -p android/" 
       cache:
         directories:
