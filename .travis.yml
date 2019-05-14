@@ -1,9 +1,9 @@
 language: node_js
 install:
   - npm install 
-  - npm ci
+ 
 node_js:
-  - "stable"
+  
 cache:
   directories:
   - node_modules
@@ -13,14 +13,12 @@ branches:
     - master1
     - dev
 script:
-  - npm test
-  - npm run build
-  - react-native link @react-native-community/async-storage
+  - react-native run-android
 
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $github-token  # Set in travis-ci.org dashboard, marked secure
+  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
   local_dir: build
   keep-history: true
   on:
