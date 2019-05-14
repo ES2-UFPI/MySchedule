@@ -7,7 +7,7 @@ cache:
 
 branches:
   only:
-    - master
+    - master1
     - dev
 script:
   - npm test
