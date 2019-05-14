@@ -1,26 +1,16 @@
-language: node_js
+os: linux
+language: android
+jdk: oraclejdk8
+android:
+  components:
+    - build-tools-23.0.1
+    - android-23
+before_install:
+  - yes | sdkmanager "platforms;android-23"
+  - yes | sdkmanager "build-tools;23.0.1"
+  - nvm install && nvm use
+  - npm install -g "npm@$(jq -r '.engines.npm' package.json)"
 install:
-  - npm install 
- 
-node_js:
-  
-cache:
-  directories:
-  - node_modules
-
-branches:
-  only:
-    - master1
-    - dev
+  - npm ci
 script:
-  - react-native run-android
-
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
-  local_dir: build
-  keep-history: true
-  on:
-    branch: master
-
+  - "./android/gradlew assembleRelease -p android/"
