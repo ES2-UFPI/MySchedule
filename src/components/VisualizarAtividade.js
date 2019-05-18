@@ -15,10 +15,31 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import Icon3 from 'react-native-vector-icons/Entypo'
-
+import AsyncStorage from '@react-native-community/async-storage'
+import { ConfirmDialog } from 'react-native-simple-dialogs';
 
 export default class Visualizar extends Component{
   
+    constructor(props) {
+        super(props);
+        this.state={
+          dialogVisible:false
+        }
+    
+      }
+    excluir = async () => {
+        let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
+        for(let i=0;i<docs.length;i++){
+            if (docs[i].key == this.props.chave){
+                docs.splice(i,i)
+            }
+        }
+
+         AsyncStorage.setItem("atividades", JSON.stringify(docs));
+         this.setState({dialogVisible:false},this.props.cancelar)
+         
+    }
+
     render(){
         let data=''
         let d = new Date()
@@ -37,6 +58,21 @@ export default class Visualizar extends Component{
                 </TouchableWithoutFeedback>
 
                 <View style={styles.container}>
+
+                <ConfirmDialog
+                    title="Excluir Atividade?"
+                    message="Deseja realmente excluir essa atividade?"
+                    visible={this.state.dialogVisible}
+                    
+                    positiveButton={{
+                        title: "Sim",
+                        onPress: this.excluir
+                    }}
+                    negativeButton={{
+                        title: "Não",
+                        onPress: () => this.setState({dialogVisible:false})
+                    }}
+                />
                     <Text style={styles.header}>{this.props.desc}</Text>
                     <Text
                         style={styles.texto}>
@@ -65,14 +101,14 @@ export default class Visualizar extends Component{
                             <Text style={styles.button}><Icon name='pencil' size={20}></Icon></Text>
                         </TouchableOpacity>
                         
-                        <TouchableOpacity onPress={this.excluir}>
+                        <TouchableOpacity onPress={()=>this.setState({dialogVisible:true})}>
                             <Text style={styles.button}><Icon name='trash-o' size={20}></Icon></Text>
                         </TouchableOpacity>
 
                     </View>
                 </View>
 
-                <TouchableWithoutFeedback onPress={this.props.calcelar}>
+                <TouchableWithoutFeedback onPress={this.props.cancelar}>
                     <View style={styles.offset}></View>
                 </TouchableWithoutFeedback>
 
