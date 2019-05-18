@@ -6,12 +6,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  ActionButton,
 
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { FlatList } from 'react-native-gesture-handler';
 import TelaAtividade from './telaAtividade'
 import moment from 'moment';
+import Visualizar from './VisualizarAtividade'
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
@@ -21,15 +23,19 @@ export default class ListaAtividade extends Component {
 
   constructor(props) {
     super(props);
-    this.RecuperarData
+    this.state={
+      docs: [
+      
+    ],
+    showVizualizar:false, desc:'',dificuldade:'',frequencia:'',data:null
+    }
 
   }
 
-  state = {
-    docs: [
-      
-    ]
-  };
+
+  componentWillMount(){
+  
+  }
 
   recuperar = async () => {
     let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
@@ -49,33 +55,44 @@ export default class ListaAtividade extends Component {
         key: this.state.docs.length.toString()
       }
 
-      let docs = this.state.docs;
+      let docs = this.state.docs
       docs.push(novaAtividade);
 
-      this.setState({ docs }); 
+      //this.setState({ docs }); 
       AsyncStorage.setItem("atividades", JSON.stringify(docs));
 
     } catch (error) {
       // Error retrieving data
       alert('eroo')
     }
-  };
-
-  telaAtividade = () => {
-    
   }
 
+
   renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.atividadeContainer} onPress={this.telaAtividade}>
+    <TouchableOpacity 
+      style={styles.atividadeContainer} 
+      onPress={()=>{this.setState({showVizualizar:true},this.setState({desc:item.desc}),this.setState({dificuldade:item.dificuldade}),this.setState({frequencia:item.frequencia}),this.setState({data:item.data})  )}} >
       <Text style={styles.titulo}> {item.desc}</Text>
       <Text style={styles.hora}> {moment(item.data).format('HH:mm')} </Text>
     </TouchableOpacity>
   );
 
+
   render() {
     return (
       <View style={styles.tela}>
         
+        <Visualizar 
+           isVisible = {this.state.showVizualizar}
+           style={styles.visualizar}
+           cancelar={()=>this.setState({showVizualizar:false})}
+           desc ={this.state.desc}
+           dificuldade={this.state.dificuldade}
+           frequencia={this.state.frequencia}
+           data={this.state.data}
+           >
+        </Visualizar>
+
         <View style={styles.barraSuperior}>
           <Text style={styles.textDia}>11</Text>
           <Text style={styles.textMes}>Agosto</Text>
@@ -105,12 +122,7 @@ export default class ListaAtividade extends Component {
             <Text style={styles.buttonText}>Nova Atividade</Text>
           </TouchableOpacity>
 
-          <Text>
-            {this.state.desc}
-            {this.state.dificuldade}
-            {this.state.frequencia}
-            {this.state.date}
-          </Text>
+          
         </View>
 
       </View>
@@ -179,7 +191,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     marginTop: 10
-  }, container: {
+  }, 
+  container: {
     flex: 1,
     backgroundColor: "#FFF"
   },
@@ -193,5 +206,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
+  },
+  visualizar:{
+    flex:1,
+    backgroundColor:'blue',
+    color:'blue'
   }
 })

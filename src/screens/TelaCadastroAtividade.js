@@ -25,13 +25,13 @@ class Frequencia extends Component {
   }
   render() {
     let data = [{
-      value: 'Diario',
+      value: 'Diariamente',
     }, {
-      value: 'Semanal',
+      value: 'Semanalmente',
     }, {
-      value: 'Mensal',
+      value: 'Mensalmente',
     },{
-      value: 'Anual',
+      value: 'Anualmente',
     },{
       value: 'Não se repete'
     }];
@@ -126,8 +126,8 @@ export default class CadastroAtividade extends Component{
             'Digite uma data válida',)
             return false
       }
-    if( (parseInt(this.state.date.getHours()) < parseInt(x.getHours()) && parseInt(dia) == x.getDate())
-      ||(parseInt(this.state.date.getMinutes()) < parseInt(x.getMinutes()) &&  parseInt(this.state.date.getHours()) == parseInt(x.getHours()) )  ){
+    if( (parseInt(dia) == parseInt(x.getDate()) &&  parseInt(this.state.date.getHours()) < parseInt(x.getHours()) )
+      ||(parseInt(this.state.date.getMinutes()) < parseInt(x.getMinutes()) &&  parseInt(this.state.date.getHours()) == parseInt(x.getHours()) && parseInt(dia) == parseInt(x.getDate()) )  ){
         Alert.alert(
           'Hora Inválida!',
           'Digite uma hora válida',)
