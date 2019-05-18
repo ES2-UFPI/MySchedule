@@ -12,10 +12,9 @@ import Login from './src/components/login'
 
 const navigator = createDrawerNavigator({
   home: ListaAtividade,
+  dias: Dias,
   calendario: Calendario,
   semanas: Semanas,
-  dias: Dias,
-  atividades: ListaAtividade,
   cadastroDeAtividade: CadastroAtividade,
   login: Login
 })

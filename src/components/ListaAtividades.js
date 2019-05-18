@@ -66,7 +66,7 @@ export default class ListaAtividade extends Component {
   renderItem = ({ item }) => (
     <TouchableOpacity style={styles.atividadeContainer} onPress={this.telaAtividade}>
       <Text style={styles.titulo}> {item.desc}</Text>
-      <Text style={styles.hora}> {moment(item.data).format('HH:mm')} </Text>
+      <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
     </TouchableOpacity>
   );
 
@@ -82,19 +82,11 @@ export default class ListaAtividade extends Component {
             My Schedule
           </Text>
 
-          <View style={styles.infoDia}>
-            <Text style={styles.textDia}>11</Text>
-            <Text style={styles.textMes}>Agosto</Text>
-          </View>
-
         </View>
 
         <ScrollView >
           <View style={styles.scrol}>
-            <View style={styles.barraLateral}>
-              <Text style={styles.textBarra}>00:00  {"\n\n"}01:00{"\n\n"}02:00{"\n\n"}03:00{"\n\n"}04:00{"\n\n"}05:00{"\n\n"}06:00{"\n\n"}07:00{"\n\n"}08:00{"\n\n"}09:00{"\n\n"}10:00{"\n\n"}11:00{"\n\n"}12:00{"\n\n"}13:00{"\n\n"}14:00{"\n\n"}15:00{"\n\n"}16:00{"\n\n"}17:00{"\n\n"}18:00{"\n\n"}19:00{"\n\n"}20:00{"\n\n"}21:00{"\n\n"}22:00{"\n\n"}23:00{"\n\n"}24:00 </Text>
-            </View>
-
+          
             <FlatList
               contentContainerStyle={styles.list}
               data={this.state.docs}
@@ -142,9 +134,11 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 5
+    marginBottom: 5,
+    flex: 1
   },
   hora: {
+    width: 100,
     color: "#666"
   },
   barraSuperior: {
@@ -187,7 +181,8 @@ const styles = StyleSheet.create({
   },
   barraInferior: {
     justifyContent: "space-between",
-    alignContent: "flex-end"
+    alignContent: "flex-end",
+    marginVertical: 12.5
   },
   buttonText: {
     color: '#fff',
@@ -204,9 +199,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#dcdcdc",
     borderWidth: 1,
     borderColor: "#DDD",
-    borderRadius: 5,
+    borderRadius: 2,
     padding: 10,
     marginBottom: 20,
+    flexDirection: "row"
   },
   botaoMenu :{
     width: 50,
