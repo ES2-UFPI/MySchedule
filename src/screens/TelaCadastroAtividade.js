@@ -65,7 +65,10 @@ class Dificuldade extends Component {
 const estadoInicial = { desc: '', date: new Date(), frequencia: 'Não se repete', dificuldade: '', }
 
 export default class CadastroAtividade extends Component {
-
+  static navigationOptions = {
+    title: "Nova Atividade",
+    color: "FFF"
+  }
   constructor(props) {
     super(props)
     this.state = {
