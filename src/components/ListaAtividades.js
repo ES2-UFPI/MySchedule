@@ -11,7 +11,9 @@ import {
 import AsyncStorage from '@react-native-community/async-storage'
 import { FlatList } from 'react-native-gesture-handler';
 import TelaAtividade from './telaAtividade'
+import TelaCadastro from '../screens/TelaCadastroAtividade'
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
@@ -21,50 +23,46 @@ export default class ListaAtividade extends Component {
 
   constructor(props) {
     super(props);
-    this.RecuperarData
-
   }
 
   state = {
-    docs: [
-      
-    ]
+    docs: [ ]
   };
 
   recuperar = async () => {
     let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
-    this.setState({docs})
+    this.setState({ docs })
   }
 
   RecuperarData = async () => {
-    try {
-      let value = await AsyncStorage.getItem('descricao');
-      let parsed = JSON.parse(value)
+    
 
-      let novaAtividade = {
-        desc: parsed.descricao,
-        frequencia: parsed.frequencia,
-        dificuldade: parsed.dificuldade,
-        data: parsed.data,
-        key: this.state.docs.length.toString()
-      }
+    let value = await AsyncStorage.getItem('descricao');
+    let parsed = JSON.parse(value)
 
-      let docs = this.state.docs;
-      docs.push(novaAtividade);
-
-      this.setState({ docs }); 
-      AsyncStorage.setItem("atividades", JSON.stringify(docs));
-
-    } catch (error) {
-      // Error retrieving data
-      alert('eroo')
+    let novaAtividade = {
+      desc: parsed.descricao,
+      frequencia: parsed.frequencia,
+      dificuldade: parsed.dificuldade,
+      data: parsed.data,
+      key: this.state.docs.length.toString()
     }
+
+    let docs = this.state.docs;
+    docs.push(novaAtividade);
+
+    this.setState({ docs });
+    AsyncStorage.setItem("atividades", JSON.stringify(docs));
+
+    <TelaCadastro>
+
+    </TelaCadastro>
   };
 
   telaAtividade = () => {
-    
-  }
 
+  }
+ 
   renderItem = ({ item }) => (
     <TouchableOpacity style={styles.atividadeContainer} onPress={this.telaAtividade}>
       <Text style={styles.titulo}> {item.desc}</Text>
@@ -74,16 +72,25 @@ export default class ListaAtividade extends Component {
 
   render() {
     return (
-      <View style={styles.tela}>
-        
+      <View style={styles.tela}>     
         <View style={styles.barraSuperior}>
-          <Text style={styles.textDia}>11</Text>
-          <Text style={styles.textMes}>Agosto</Text>
+          <TouchableOpacity style = {styles.botaoMenu} onPress ={() => this.props.navigation.openDrawer()}>
+             <Icon name='bars' size={24} color ="#FFF"> </Icon>
+          </TouchableOpacity>
+
+          <Text style={styles.tituloBarra}>
+            My Schedule
+          </Text>
+
+          <View style={styles.infoDia}>
+            <Text style={styles.textDia}>11</Text>
+            <Text style={styles.textMes}>Agosto</Text>
+          </View>
 
         </View>
+
         <ScrollView >
           <View style={styles.scrol}>
-
             <View style={styles.barraLateral}>
               <Text style={styles.textBarra}>00:00  {"\n\n"}01:00{"\n\n"}02:00{"\n\n"}03:00{"\n\n"}04:00{"\n\n"}05:00{"\n\n"}06:00{"\n\n"}07:00{"\n\n"}08:00{"\n\n"}09:00{"\n\n"}10:00{"\n\n"}11:00{"\n\n"}12:00{"\n\n"}13:00{"\n\n"}14:00{"\n\n"}15:00{"\n\n"}16:00{"\n\n"}17:00{"\n\n"}18:00{"\n\n"}19:00{"\n\n"}20:00{"\n\n"}21:00{"\n\n"}22:00{"\n\n"}23:00{"\n\n"}24:00 </Text>
             </View>
@@ -101,21 +108,17 @@ export default class ListaAtividade extends Component {
         <View style={styles.barraInferior}>
           <Button onPress={this.RecuperarData} title='recuperar'></Button>
           <Button onPress={this.recuperar} title='recuperar2'></Button>
-          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} >
-            <Text style={styles.buttonText}>Nova Atividade</Text>
+
+          <TouchableOpacity style={styles.button} onPress={ () => this.props.navigation.navigate('cadastroDeAtividade') } extraData={this.state} >
+            <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>
 
-          <Text>
-            {this.state.desc}
-            {this.state.dificuldade}
-            {this.state.frequencia}
-            {this.state.date}
-          </Text>
         </View>
-
       </View>
     );
+  
   }
+ 
 }
 const styles = StyleSheet.create({
   tela: {
@@ -147,20 +150,31 @@ const styles = StyleSheet.create({
   barraSuperior: {
     height: 55,
     backgroundColor: "#21409a",
-    alignItems: "flex-end"
+    flexDirection: "row"
+  },
+  tituloBarra: {
+    width: 200,
+    flex: 1,
+    fontSize: 24,
+    color: "#FFF",
+    marginTop: 10,
+    marginHorizontal: 50
+  },
+  infoDia: {
+    width: 60,
   },
   textMes: {
     backgroundColor: "#21409a",
     fontSize: 13,
     color: "#FFF",
-  
-    marginHorizontal: 15
+    flex: 1
   },
   textDia: {
     fontSize: 24,
     color: "#FFF",
-    marginTop:3,
-    marginHorizontal:25,
+    // marginTop: 3,
+    marginHorizontal: 5,
+    flex: 1
   },
   button: {
     alignItems: 'center',
@@ -193,5 +207,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
+  },
+  botaoMenu :{
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#FFF"
   }
 })
