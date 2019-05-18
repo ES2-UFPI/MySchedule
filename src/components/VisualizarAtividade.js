@@ -83,7 +83,7 @@ export default class Visualizar extends Component{
                     <Text 
                         style={styles.texto}>
                         <Icon3 name='dot-single' size={20}></Icon3>
-                        Repete : {this.props.chave}
+                        Repete : {this.props.frequencia}
                     </Text>  
                     <Text 
                         style={styles.texto}>
