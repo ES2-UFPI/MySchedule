@@ -27,15 +27,11 @@ export default class ListaAtividade extends Component {
       docs: [
       
     ],
-    showVizualizar:false, desc:'',dificuldade:'',frequencia:'',data:null
+    showVizualizar:false, desc:'',dificuldade:'',frequencia:'',data:null, key:'',
     }
 
   }
 
-
-  componentWillMount(){
-  
-  }
 
   recuperar = async () => {
     let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
@@ -54,7 +50,7 @@ export default class ListaAtividade extends Component {
         data: parsed.data,
         key: this.state.docs.length.toString()
       }
-
+     
       let docs = this.state.docs
       docs.push(novaAtividade);
 
@@ -71,15 +67,19 @@ export default class ListaAtividade extends Component {
   renderItem = ({ item }) => (
     <TouchableOpacity 
       style={styles.atividadeContainer} 
-      onPress={()=>{this.setState({showVizualizar:true},this.setState({desc:item.desc}),this.setState({dificuldade:item.dificuldade}),this.setState({frequencia:item.frequencia}),this.setState({data:item.data})  )}} >
+      onPress={()=>{this.setState({showVizualizar:true},this.setState({desc:item.desc}),this.setState({dificuldade:item.dificuldade}),this.setState({frequencia:item.frequencia}),this.setState({data:item.data}),this.setState({key:String(item.key)})  )}} >
       <Text style={styles.titulo}> {item.desc}</Text>
       <Text style={styles.hora}> {moment(item.data).format('HH:mm')} </Text>
+     
     </TouchableOpacity>
+    
   );
 
 
   render() {
+   
     return (
+     
       <View style={styles.tela}>
         
         <Visualizar 
@@ -90,13 +90,14 @@ export default class ListaAtividade extends Component {
            dificuldade={this.state.dificuldade}
            frequencia={this.state.frequencia}
            data={this.state.data}
+           chave = {this.state.key}
            >
         </Visualizar>
 
         <View style={styles.barraSuperior}>
           <Text style={styles.textDia}>11</Text>
           <Text style={styles.textMes}>Agosto</Text>
-
+          
         </View>
         <ScrollView >
           <View style={styles.scrol}>
