@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  ActionButton,
 
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -14,6 +15,8 @@ import TelaAtividade from './telaAtividade'
 import TelaCadastro from '../screens/TelaCadastroAtividade'
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Visualizar from './VisualizarAtividade'
+
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
@@ -23,11 +26,17 @@ export default class ListaAtividade extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state={
+      docs: [
+      
+    ],
+    showVizualizar:false, desc:'',dificuldade:'',frequencia:'',data:null, key:'',
+    }
+
   }
 
-  state = {
-    docs: []
-  };
+
 
   recuperar = async () => {
     let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
@@ -36,44 +45,42 @@ export default class ListaAtividade extends Component {
 
   RecuperarData = async () => {
 
-    let value = await AsyncStorage.getItem('descricao');
-    let parsed = JSON.parse(value)
 
-    let novaAtividade = {
-      desc: parsed.descricao,
-      frequencia: parsed.frequencia,
-      dificuldade: parsed.dificuldade,
-      data: parsed.data,
-      key: this.state.docs.length.toString()
+      let novaAtividade = {
+        desc: parsed.descricao,
+        frequencia: parsed.frequencia,
+        dificuldade: parsed.dificuldade,
+        data: parsed.data,
+        key: this.state.docs.length.toString()
+      }
+     
+      let docs = this.state.docs
+      docs.push(novaAtividade);
+
+      //this.setState({ docs }); 
+      AsyncStorage.setItem("atividades", JSON.stringify(docs));
+
+    } catch (error) {
+      // Error retrieving data
+      alert('eroo')
     }
 
-    let docs = this.state.docs;
-    docs.push(novaAtividade);
-
-    this.setState({ docs });
-    AsyncStorage.setItem("atividades", JSON.stringify(docs));
-
-  };
-
-  telaAtividade = () => {
-
-  }
-
-  novaAtividade = (docs) => {
-    this.setState({ docs })
-    AsyncStorage.setItem("atividades", JSON.stringify(docs));
   }
 
 
   renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.atividadeContainer} onPress={this.telaAtividade}>
+    <TouchableOpacity 
+      style={styles.atividadeContainer} 
+      onPress={()=>{this.setState({showVizualizar:true},this.setState({desc:item.desc}),this.setState({dificuldade:item.dificuldade}),this.setState({frequencia:item.frequencia}),this.setState({data:item.data}),this.setState({key:String(item.key)})  )}} >
       <Text style={styles.titulo}> {item.desc}</Text>
       <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
+
     </TouchableOpacity>
+    
   );
 
-  render() {
 
+  render() {
     const desc1 = this.props.navigation.getParam('desc', 'x')
     if (desc1 != 'x') {
 
@@ -90,8 +97,11 @@ export default class ListaAtividade extends Component {
       this.recuperar
     }
 
+
     return (
+     
       <View style={styles.tela}>
+
         <View style={styles.barraSuperior}>
           <TouchableOpacity style={styles.botaoMenu} onPress={() => this.props.navigation.openDrawer()}>
             <Icon name='bars' size={24} color="#FFF"> </Icon>
@@ -100,6 +110,23 @@ export default class ListaAtividade extends Component {
           <Text style={styles.tituloBarra}>
             My Schedule
           </Text>
+       
+        <Visualizar 
+           isVisible = {this.state.showVizualizar}
+           style={styles.visualizar}
+           cancelar={()=>this.setState({showVizualizar:false})}
+           desc ={this.state.desc}
+           dificuldade={this.state.dificuldade}
+           frequencia={this.state.frequencia}
+           data={this.state.data}
+           chave = {this.state.key}
+           >
+        </Visualizar>
+
+        <View style={styles.barraSuperior}>
+          <Text style={styles.textDia}>11</Text>
+          <Text style={styles.textMes}>Agosto</Text>
+          
 
         </View>
 
@@ -206,7 +233,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     marginTop: 10
-  }, container: {
+  }, 
+  container: {
     flex: 1,
     backgroundColor: "#FFF"
   },
@@ -227,5 +255,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     color: "#FFF"
+    marginBottom: 20,
+  },
+  visualizar:{
+    flex:1,
+    backgroundColor:'blue',
+    color:'blue'
   }
 })

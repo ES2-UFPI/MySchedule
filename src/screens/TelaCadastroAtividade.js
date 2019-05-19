@@ -25,14 +25,16 @@ class Frequencia extends Component {
   }
   render() {
     let data = [{
-      value: 'Diario',
+      value: 'Diariamente',
     }, {
-      value: 'Semanal',
+      value: 'Semanalmente',
     }, {
-      value: 'Mensal',
-    }, {
-      value: 'Anual',
-    }, {
+
+      value: 'Mensalmente',
+    },{
+      value: 'Anualmente',
+    },{
+
       value: 'Não se repete'
     }];
     return (
@@ -122,6 +124,7 @@ export default class CadastroAtividade extends Component {
     let dia = this.state.date.getDate()
     let x = new Date()
 
+
     if ((parseInt(dia) < x.getDate() && parseInt(mes) == parseInt(x.getMonth() + 1) && parseInt(ano) == parseInt(x.getYear() + 1900))
       || (parseInt(ano) < parseInt(x.getYear() + 1900))
       || (parseInt(mes) < parseInt(x.getMonth() + 1) && parseInt(ano) == parseInt(x.getYear() + 1900))) {
@@ -137,6 +140,7 @@ export default class CadastroAtividade extends Component {
         'Digite uma hora válida')
       return false
     }
+
 
     return true
   }
