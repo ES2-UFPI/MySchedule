@@ -30,8 +30,8 @@ export default class ListaAtividade extends Component {
   };
 
   recuperar = async () => {
-    let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
-    this.setState({ docs })
+    let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
+    this.setState({ docs: atividades })
   }
 
   RecuperarData = async () => {
@@ -59,9 +59,9 @@ export default class ListaAtividade extends Component {
 
   }
 
-  novaAtividade = ({ item }) => {
-    this.setState(item)
-    AsyncStorage.setItem("atividades", JSON.stringify(item));
+  novaAtividade = (docs) => {
+    this.setState({ docs })
+    AsyncStorage.setItem("atividades", JSON.stringify(docs));
   }
 
 
@@ -73,20 +73,21 @@ export default class ListaAtividade extends Component {
   );
 
   render() {
-    //   let bd = JSON.parse(await AsyncStorage.getItem('atividades'));
 
-    const desc1 = this.props.navigation.getParam('desc','x')
-    if (JSON.stringify(desc1) != '"x"') {
+    const desc1 = this.props.navigation.getParam('desc', 'x')
+    if (desc1 != 'x') {
 
       let novaAtividade = {
         key: this.state.docs.length.toString(),
-        desc: JSON.stringify(desc1),
+        desc: desc1,
       }
 
-      let docs = this.state.docs;
-      docs.push(novaAtividade);
+      let atividades = this.state.docs;
+      atividades.push(novaAtividade);
 
-      this.novaAtividade = { docs }
+      this.novaAtividade = { atividades }
+    } else {
+      this.recuperar
     }
 
     return (
@@ -116,12 +117,8 @@ export default class ListaAtividade extends Component {
         </ScrollView>
 
         <View style={styles.barraInferior}>
-
-          {/*
-          <Button onPress={this.RecuperarData} title='recuperar'></Button>
-          <Button onPress={this.recuperar} title='recuperar2'></Button>
-          */}
-
+          {//  <Button onPress={this.recuperar} title='recuperar2'></Button> 
+          }
           <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
             <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>

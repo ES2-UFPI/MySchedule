@@ -80,8 +80,8 @@ export default class Dia extends Component {
             My Schedule
           </Text>
 
-          <TouchableOpacity style = {styles.botaoMenu} onPress ={() => this.props.navigation.openDrawer()}>
-             <Icon name='left' size={24} color ="#FFF"> </Icon>
+          <TouchableOpacity style = {styles.botaoPass} onPress ={() => this.props.navigation.openDrawer()}>
+             <Icon name='angle-left' size={24} color ="#FFF"> </Icon>
           </TouchableOpacity>
 
 
@@ -90,8 +90,8 @@ export default class Dia extends Component {
             <Text style={styles.textMes}>Agosto</Text>
           </View>
 
-          <TouchableOpacity style = {styles.botaoMenu} onPress ={() => this.props.navigation.openDrawer()}>
-             <Icon name='rigth' size={24} color ="#FFF"> </Icon>
+          <TouchableOpacity style = {styles.botaoPass} onPress ={() => this.props.navigation.openDrawer()}>
+             <Icon name='angle-right' size={24} color ="#FFF"> </Icon>
           </TouchableOpacity>
 
         </View>
@@ -164,10 +164,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#FFF",
     marginTop: 10,
-    marginHorizontal: 50
+    marginHorizontal: 20
   },
   infoDia: {
-    width: 60,
+	width: 60,
+	alignItems: 'center',
+	justifyContent: 'center'
   },
   textMes: {
     backgroundColor: "#21409a",
@@ -220,6 +222,12 @@ const styles = StyleSheet.create({
     width: 50,
     alignItems: "center",
     justifyContent: "center",
+    color: "#FFF"
+  },
+  botaoPass: {
+	width: 20,
+    alignItems: "center",
+	justifyContent: "center",
     color: "#FFF"
   }
 })
