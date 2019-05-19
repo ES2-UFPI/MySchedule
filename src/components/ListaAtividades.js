@@ -2,17 +2,14 @@ import React, { Component } from 'react';
 import {
   ScrollView,
   View,
-  Button,
   StyleSheet,
   TouchableOpacity,
-  Text,
-  ActionButton,
-
+  Text, Button
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { FlatList } from 'react-native-gesture-handler';
-import TelaAtividade from './telaAtividade'
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Visualizar from './VisualizarAtividade'
 
 export default class ListaAtividade extends Component {
@@ -23,88 +20,112 @@ export default class ListaAtividade extends Component {
 
   constructor(props) {
     super(props);
-    this.state={
-      docs: [
-      
-    ],
-    showVizualizar:false, desc:'',dificuldade:'',frequencia:'',data:null, key:'',
+
+    this.state = {
+      docs: [],
+      showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',
     }
 
+    let ativ = this.recuperar
+    this.novaAtividade = {ativ}
   }
 
-
   recuperar = async () => {
-    let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
-    this.setState({docs})
+    let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
+    this.setState({ docs: atividades })
+    return atividades
   }
 
   RecuperarData = async () => {
-    try {
-      let value = await AsyncStorage.getItem('descricao');
-      let parsed = JSON.parse(value)
-
-      let novaAtividade = {
-        desc: parsed.descricao,
-        frequencia: parsed.frequencia,
-        dificuldade: parsed.dificuldade,
-        data: parsed.data,
-        key: this.state.docs.length.toString()
-      }
-     
-      let docs = this.state.docs
-      docs.push(novaAtividade);
-
-      //this.setState({ docs }); 
-      AsyncStorage.setItem("atividades", JSON.stringify(docs));
-
-    } catch (error) {
-      // Error retrieving data
-      alert('eroo')
+    let novaAtividade = {
+      desc: parsed.descricao,
+      frequencia: parsed.frequencia,
+      dificuldade: parsed.dificuldade,
+      data: parsed.data,
+      key: this.state.docs.length.toString()
     }
+
+    let docs = this.state.docs
+    docs.push(novaAtividade);
+
+    //this.setState({ docs }); 
+    AsyncStorage.setItem("atividades", JSON.stringify(docs));
+
   }
 
+  novaAtividade = (docs) => {
+    this.setState({ docs })
+    AsyncStorage.setItem("atividades", JSON.stringify(docs));
+  }
 
   renderItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.atividadeContainer} 
-      onPress={()=>{this.setState({showVizualizar:true},this.setState({desc:item.desc}),this.setState({dificuldade:item.dificuldade}),this.setState({frequencia:item.frequencia}),this.setState({data:item.data}),this.setState({key:String(item.key)})  )}} >
+    <TouchableOpacity
+      style={styles.atividadeContainer}
+      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.desc }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key) })) }} >
       <Text style={styles.titulo}> {item.desc}</Text>
-      <Text style={styles.hora}> {moment(item.data).format('HH:mm')} </Text>
-     
+      <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
     </TouchableOpacity>
-    
   );
 
+  componentDidMount() {
+  
+    let ativ = this.recuperar
+    this.novaAtividade = {ativ}
+  }
 
   render() {
-   
+    const desc1 = this.props.navigation.getParam('desc', 'x')
+    if (desc1 != 'x') {
+
+      let novaAtividade = {
+        key: this.state.docs.length.toString(),
+        desc: desc1,
+      }
+
+      let atividades = this.state.docs;
+      atividades.push(novaAtividade);
+
+      this.novaAtividade = { atividades }
+    } else {
+      
+      let ativ = this.recuperar
+      this.novaAtividade = {ativ}
+    //  this.setState({docs: ativ})
+      
+    }
+
     return (
-     
       <View style={styles.tela}>
-        
-        <Visualizar 
-           isVisible = {this.state.showVizualizar}
-           style={styles.visualizar}
-           cancelar={()=>this.setState({showVizualizar:false})}
-           desc ={this.state.desc}
-           dificuldade={this.state.dificuldade}
-           frequencia={this.state.frequencia}
-           data={this.state.data}
-           chave = {this.state.key}
-           >
-        </Visualizar>
 
         <View style={styles.barraSuperior}>
-          <Text style={styles.textDia}>11</Text>
-          <Text style={styles.textMes}>Agosto</Text>
-          
+          <TouchableOpacity style={styles.botaoMenu} onPress={() => this.props.navigation.openDrawer()}>
+            <Icon name='bars' size={24} color="#FFF"> </Icon>
+          </TouchableOpacity>
+
+          <Text style={styles.tituloBarra}>
+            My Schedule
+          </Text>
+
+          <View style={styles.barraSuperior}>
+            <Text style={styles.textDia}>11</Text>
+            <Text style={styles.textMes}>Agosto</Text>
+          </View>
         </View>
+
+        <Visualizar
+          isVisible={this.state.showVizualizar}
+          style={styles.visualizar}
+          cancelar={() => this.setState({ showVizualizar: false })}
+          desc={this.state.desc}
+          dificuldade={this.state.dificuldade}
+          frequencia={this.state.frequencia}
+          data={this.state.data}
+          chave={this.state.key}
+        >
+        </Visualizar>
+
         <ScrollView >
           <View style={styles.scrol}>
-
-            <View style={styles.barraLateral}>
-              <Text style={styles.textBarra}>00:00  {"\n\n"}01:00{"\n\n"}02:00{"\n\n"}03:00{"\n\n"}04:00{"\n\n"}05:00{"\n\n"}06:00{"\n\n"}07:00{"\n\n"}08:00{"\n\n"}09:00{"\n\n"}10:00{"\n\n"}11:00{"\n\n"}12:00{"\n\n"}13:00{"\n\n"}14:00{"\n\n"}15:00{"\n\n"}16:00{"\n\n"}17:00{"\n\n"}18:00{"\n\n"}19:00{"\n\n"}20:00{"\n\n"}21:00{"\n\n"}22:00{"\n\n"}23:00{"\n\n"}24:00 </Text>
-            </View>
 
             <FlatList
               contentContainerStyle={styles.list}
@@ -117,16 +138,15 @@ export default class ListaAtividade extends Component {
         </ScrollView>
 
         <View style={styles.barraInferior}>
-          <Button onPress={this.RecuperarData} title='recuperar'></Button>
-          <Button onPress={this.recuperar} title='recuperar2'></Button>
-          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} >
-            <Text style={styles.buttonText}>Nova Atividade</Text>
+
+        {//  <Button onPress={this.recuperar} title='recuperar2'></Button>
+        }
+          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
+            <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>
 
-          
         </View>
-
-      </View>
+      </View>   
     );
   }
 }
@@ -152,28 +172,40 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 5
+    marginBottom: 5,
+    flex: 1
   },
   hora: {
+    width: 100,
     color: "#666"
   },
   barraSuperior: {
     height: 55,
     backgroundColor: "#21409a",
-    alignItems: "flex-end"
+    flexDirection: "row"
+  },
+  tituloBarra: {
+    width: 200,
+    flex: 1,
+    fontSize: 24,
+    color: "#FFF",
+    marginTop: 10,
+    marginHorizontal: 50
+  },
+  infoDia: {
+    width: 60,
   },
   textMes: {
     backgroundColor: "#21409a",
     fontSize: 13,
     color: "#FFF",
-  
-    marginHorizontal: 15
+    flex: 1
   },
   textDia: {
     fontSize: 24,
     color: "#FFF",
-    marginTop:3,
-    marginHorizontal:25,
+    marginHorizontal: 5,
+    flex: 1
   },
   button: {
     alignItems: 'center',
@@ -186,13 +218,14 @@ const styles = StyleSheet.create({
   },
   barraInferior: {
     justifyContent: "space-between",
-    alignContent: "flex-end"
+    alignContent: "flex-end",
+    marginVertical: 12.5
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     marginTop: 10
-  }, 
+  },
   container: {
     flex: 1,
     backgroundColor: "#FFF"
@@ -204,13 +237,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#dcdcdc",
     borderWidth: 1,
     borderColor: "#DDD",
-    borderRadius: 5,
+    borderRadius: 2,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 12.5,
+    flexDirection: "row"
   },
-  visualizar:{
-    flex:1,
-    backgroundColor:'blue',
-    color:'blue'
+  botaoMenu: {
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#FFF",
+  },
+  visualizar: {
+    flex: 1,
+    backgroundColor: 'blue',
+    color: 'blue'
   }
 })

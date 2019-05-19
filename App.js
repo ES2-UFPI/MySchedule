@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import { createStackNavigator, createAppContainer, createDrawerNavigator,DrawerNavigator } from "react-navigation";
 
 import Calendario from './src/components/Calendario';
-import Dias from './src/components/dias';
+import Dias from './src/screens/TelaExibicaoDia';
 import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/screens/TelaCadastroAtividade'
 import ListaAtividade from './src/components/ListaAtividades'
@@ -12,10 +12,7 @@ import Login from './src/components/login'
 
 const navigator = createDrawerNavigator({
   home: ListaAtividade,
-  calendario: Calendario,
-  semanas: Semanas,
   dias: Dias,
-  atividades: ListaAtividade,
   cadastroDeAtividade: CadastroAtividade,
   login: Login
 })
