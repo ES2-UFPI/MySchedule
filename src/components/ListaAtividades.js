@@ -27,11 +27,11 @@ export default class ListaAtividade extends Component {
   constructor(props) {
     super(props);
 
-    this.state={
+    this.state = {
       docs: [
-      
-    ],
-    showVizualizar:false, desc:'',dificuldade:'',frequencia:'',data:null, key:'',
+
+      ],
+      showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',
     }
 
   }
@@ -45,38 +45,36 @@ export default class ListaAtividade extends Component {
 
   RecuperarData = async () => {
 
-
-      let novaAtividade = {
-        desc: parsed.descricao,
-        frequencia: parsed.frequencia,
-        dificuldade: parsed.dificuldade,
-        data: parsed.data,
-        key: this.state.docs.length.toString()
-      }
-     
-      let docs = this.state.docs
-      docs.push(novaAtividade);
-
-      //this.setState({ docs }); 
-      AsyncStorage.setItem("atividades", JSON.stringify(docs));
-
-    } catch (error) {
-      // Error retrieving data
-      alert('eroo')
+    let novaAtividade = {
+      desc: parsed.descricao,
+      frequencia: parsed.frequencia,
+      dificuldade: parsed.dificuldade,
+      data: parsed.data,
+      key: this.state.docs.length.toString()
     }
+
+    let docs = this.state.docs
+    docs.push(novaAtividade);
+
+    //this.setState({ docs }); 
+    AsyncStorage.setItem("atividades", JSON.stringify(docs));
 
   }
 
+  novaAtividade = (docs) => {
+    this.setState({ docs })
+    AsyncStorage.setItem("atividades", JSON.stringify(docs));
+  }
 
   renderItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.atividadeContainer} 
-      onPress={()=>{this.setState({showVizualizar:true},this.setState({desc:item.desc}),this.setState({dificuldade:item.dificuldade}),this.setState({frequencia:item.frequencia}),this.setState({data:item.data}),this.setState({key:String(item.key)})  )}} >
+    <TouchableOpacity
+      style={styles.atividadeContainer}
+      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.desc }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key) })) }} >
       <Text style={styles.titulo}> {item.desc}</Text>
       <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
 
     </TouchableOpacity>
-    
+
   );
 
 
@@ -99,7 +97,7 @@ export default class ListaAtividade extends Component {
 
 
     return (
-     
+
       <View style={styles.tela}>
 
         <View style={styles.barraSuperior}>
@@ -110,25 +108,24 @@ export default class ListaAtividade extends Component {
           <Text style={styles.tituloBarra}>
             My Schedule
           </Text>
-       
-        <Visualizar 
-           isVisible = {this.state.showVizualizar}
-           style={styles.visualizar}
-           cancelar={()=>this.setState({showVizualizar:false})}
-           desc ={this.state.desc}
-           dificuldade={this.state.dificuldade}
-           frequencia={this.state.frequencia}
-           data={this.state.data}
-           chave = {this.state.key}
-           >
-        </Visualizar>
 
-        <View style={styles.barraSuperior}>
-          <Text style={styles.textDia}>11</Text>
-          <Text style={styles.textMes}>Agosto</Text>
-          
-
+          <View style={styles.barraSuperior}>
+            <Text style={styles.textDia}>11</Text>
+            <Text style={styles.textMes}>Agosto</Text>
+          </View>
         </View>
+
+        <Visualizar
+          isVisible={this.state.showVizualizar}
+          style={styles.visualizar}
+          cancelar={() => this.setState({ showVizualizar: false })}
+          desc={this.state.desc}
+          dificuldade={this.state.dificuldade}
+          frequencia={this.state.frequencia}
+          data={this.state.data}
+          chave={this.state.key}
+        >
+        </Visualizar>
 
         <ScrollView >
           <View style={styles.scrol}>
@@ -233,7 +230,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     marginTop: 10
-  }, 
+  },
   container: {
     flex: 1,
     backgroundColor: "#FFF"
@@ -254,12 +251,11 @@ const styles = StyleSheet.create({
     width: 50,
     alignItems: "center",
     justifyContent: "center",
-    color: "#FFF"
-    marginBottom: 20,
+    color: "#FFF",
   },
-  visualizar:{
-    flex:1,
-    backgroundColor:'blue',
-    color:'blue'
+  visualizar: {
+    flex: 1,
+    backgroundColor: 'blue',
+    color: 'blue'
   }
 })
