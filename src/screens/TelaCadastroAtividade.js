@@ -153,7 +153,7 @@ export default class CadastroAtividade extends Component {
       AsyncStorage.setItem("descricao", JSON.stringify(obj))
 
       this.setState({ ...estadoInicial })
-      this.props.navigation.navigate('home')
+      this.props.navigation.navigate('home', {desc: obj.descricao,data: this.state.date})
     }
   }
 

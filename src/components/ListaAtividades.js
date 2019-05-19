@@ -26,7 +26,7 @@ export default class ListaAtividade extends Component {
   }
 
   state = {
-    docs: [ ]
+    docs: []
   };
 
   recuperar = async () => {
@@ -35,7 +35,6 @@ export default class ListaAtividade extends Component {
   }
 
   RecuperarData = async () => {
-    
 
     let value = await AsyncStorage.getItem('descricao');
     let parsed = JSON.parse(value)
@@ -54,15 +53,18 @@ export default class ListaAtividade extends Component {
     this.setState({ docs });
     AsyncStorage.setItem("atividades", JSON.stringify(docs));
 
-    <TelaCadastro>
-
-    </TelaCadastro>
   };
 
   telaAtividade = () => {
 
   }
- 
+
+  novaAtividade = ({ item }) => {
+    this.setState(item)
+    AsyncStorage.setItem("atividades", JSON.stringify(item));
+  }
+
+
   renderItem = ({ item }) => (
     <TouchableOpacity style={styles.atividadeContainer} onPress={this.telaAtividade}>
       <Text style={styles.titulo}> {item.desc}</Text>
@@ -71,11 +73,27 @@ export default class ListaAtividade extends Component {
   );
 
   render() {
+    //   let bd = JSON.parse(await AsyncStorage.getItem('atividades'));
+
+    const desc1 = this.props.navigation.getParam('desc','x')
+    if (JSON.stringify(desc1) != '"x"') {
+
+      let novaAtividade = {
+        key: this.state.docs.length.toString(),
+        desc: JSON.stringify(desc1),
+      }
+
+      let docs = this.state.docs;
+      docs.push(novaAtividade);
+
+      this.novaAtividade = { docs }
+    }
+
     return (
-      <View style={styles.tela}>     
+      <View style={styles.tela}>
         <View style={styles.barraSuperior}>
-          <TouchableOpacity style = {styles.botaoMenu} onPress ={() => this.props.navigation.openDrawer()}>
-             <Icon name='bars' size={24} color ="#FFF"> </Icon>
+          <TouchableOpacity style={styles.botaoMenu} onPress={() => this.props.navigation.openDrawer()}>
+            <Icon name='bars' size={24} color="#FFF"> </Icon>
           </TouchableOpacity>
 
           <Text style={styles.tituloBarra}>
@@ -86,7 +104,7 @@ export default class ListaAtividade extends Component {
 
         <ScrollView >
           <View style={styles.scrol}>
-          
+
             <FlatList
               contentContainerStyle={styles.list}
               data={this.state.docs}
@@ -98,19 +116,22 @@ export default class ListaAtividade extends Component {
         </ScrollView>
 
         <View style={styles.barraInferior}>
+
+          {/*
           <Button onPress={this.RecuperarData} title='recuperar'></Button>
           <Button onPress={this.recuperar} title='recuperar2'></Button>
+          */}
 
-          <TouchableOpacity style={styles.button} onPress={ () => this.props.navigation.navigate('cadastroDeAtividade') } extraData={this.state} >
+          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
             <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>
 
         </View>
       </View>
     );
-  
+
   }
- 
+
 }
 const styles = StyleSheet.create({
   tela: {
@@ -201,10 +222,10 @@ const styles = StyleSheet.create({
     borderColor: "#DDD",
     borderRadius: 2,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 12.5,
     flexDirection: "row"
   },
-  botaoMenu :{
+  botaoMenu: {
     width: 50,
     alignItems: "center",
     justifyContent: "center",
