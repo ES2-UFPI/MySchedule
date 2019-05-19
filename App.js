@@ -7,7 +7,7 @@ import Dias from './src/screens/TelaExibicaoDia';
 import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/screens/TelaCadastroAtividade'
 import ListaAtividade from './src/components/ListaAtividades'
-import Login from './src/components/login'
+import Login from './src/screens/TelaLogin'
 
 
 const navigator = createDrawerNavigator({
