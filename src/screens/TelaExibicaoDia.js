@@ -4,6 +4,7 @@ import {
   View,
   Button,
   StyleSheet,
+  DatePickerAndroid,
   TouchableOpacity,
   Text,
 
@@ -25,7 +26,8 @@ export default class Dia extends Component {
   }
 
   state = {
-    docs: [ ]
+	docs: [ ],
+	dataAtual: new Date()
   };
 
   recuperar = async () => {
@@ -57,6 +59,20 @@ export default class Dia extends Component {
     </TelaCadastro>
   };
 
+  handleDateAndroidChanged = () => {
+    DatePickerAndroid.open({
+      date: this.state.date
+    }).then(e => {
+      if (e.action !== DatePickerAndroid.dismissedAction) {
+        const momentDate = moment(this.state.dataAtual)
+        momentDate.date(e.day)
+        momentDate.month(e.month)
+        momentDate.year(e.year)
+        this.setState({ dataAtual: momentDate.toDate() })
+      }
+    })
+  }
+
   telaAtividade = () => {
 
   }
@@ -67,6 +83,21 @@ export default class Dia extends Component {
       <Text style={styles.hora}> {moment(item.data).format('HH:mm')} </Text>
     </TouchableOpacity>
   );
+
+  proximoDia = () =>{
+	 
+	  let data = this.state.dataAtual
+	  let dia = data.getDate() + 1
+	  data.setDate(dia)
+	  this.setState({dataAtual: data})
+  }
+
+  diaAnterio  = () =>{
+	let dia = this.state.dataAtual.getDate() - 1
+	let data = this.state.dataAtual
+	data.setDate(dia)
+	this.setState({dataAtual: data})
+}
 
   render() {
     return (
@@ -80,17 +111,17 @@ export default class Dia extends Component {
             My Schedule
           </Text>
 
-          <TouchableOpacity style = {styles.botaoPass} onPress ={() => this.props.navigation.openDrawer()}>
+          <TouchableOpacity style = {styles.botaoPass} onPress ={this.diaAnterio}>
              <Icon name='angle-left' size={24} color ="#FFF"> </Icon>
           </TouchableOpacity>
 
 
-          <View style={styles.infoDia}>
-            <Text style={styles.textDia}>11</Text>
-            <Text style={styles.textMes}>Agosto</Text>
-          </View>
+          <TouchableOpacity style={styles.infoDia} onPress ={this.handleDateAndroidChanged}>
+            <Text style={styles.textDia} extraData={this.state.dataAtual}>{moment(this.state.dataAtual).locale('pt-br').format('D')}</Text>
+            <Text style={styles.textMes} extraData={this.state.dataAtual}>{moment(this.state.dateAtual).locale('pt-br').format('MMMM')}</Text>
+          </TouchableOpacity>
 
-          <TouchableOpacity style = {styles.botaoPass} onPress ={() => this.props.navigation.openDrawer()}>
+          <TouchableOpacity style = {styles.botaoPass} onPress ={this.proximoDia}>
              <Icon name='angle-right' size={24} color ="#FFF"> </Icon>
           </TouchableOpacity>
 

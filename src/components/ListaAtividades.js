@@ -2,21 +2,15 @@ import React, { Component } from 'react';
 import {
   ScrollView,
   View,
-  Button,
   StyleSheet,
   TouchableOpacity,
   Text,
-  ActionButton,
-
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { FlatList } from 'react-native-gesture-handler';
-import TelaAtividade from './telaAtividade'
-import TelaCadastro from '../screens/TelaCadastroAtividade'
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Visualizar from './VisualizarAtividade'
-
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
@@ -28,15 +22,10 @@ export default class ListaAtividade extends Component {
     super(props);
 
     this.state = {
-      docs: [
-
-      ],
+      docs: [  ],
       showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',
     }
-
   }
-
-
 
   recuperar = async () => {
     let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
@@ -44,7 +33,6 @@ export default class ListaAtividade extends Component {
   }
 
   RecuperarData = async () => {
-
     let novaAtividade = {
       desc: parsed.descricao,
       frequencia: parsed.frequencia,
@@ -72,11 +60,8 @@ export default class ListaAtividade extends Component {
       onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.desc }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key) })) }} >
       <Text style={styles.titulo}> {item.desc}</Text>
       <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
-
     </TouchableOpacity>
-
   );
-
 
   render() {
     const desc1 = this.props.navigation.getParam('desc', 'x')
@@ -94,10 +79,7 @@ export default class ListaAtividade extends Component {
     } else {
       this.recuperar
     }
-
-
     return (
-
       <View style={styles.tela}>
 
         <View style={styles.barraSuperior}>
@@ -150,9 +132,7 @@ export default class ListaAtividade extends Component {
         </View>
       </View>
     );
-
   }
-
 }
 const styles = StyleSheet.create({
   tela: {
@@ -208,7 +188,6 @@ const styles = StyleSheet.create({
   textDia: {
     fontSize: 24,
     color: "#FFF",
-    // marginTop: 3,
     marginHorizontal: 5,
     flex: 1
   },
