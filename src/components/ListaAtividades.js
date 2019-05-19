@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Text,
+  Text, Button
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { FlatList } from 'react-native-gesture-handler';
@@ -22,14 +22,18 @@ export default class ListaAtividade extends Component {
     super(props);
 
     this.state = {
-      docs: [  ],
+      docs: [],
       showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',
     }
+
+    let ativ = this.recuperar
+    this.novaAtividade = {ativ}
   }
 
   recuperar = async () => {
     let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
     this.setState({ docs: atividades })
+    return atividades
   }
 
   RecuperarData = async () => {
@@ -63,6 +67,12 @@ export default class ListaAtividade extends Component {
     </TouchableOpacity>
   );
 
+  componentDidMount() {
+  
+    let ativ = this.recuperar
+    this.novaAtividade = {ativ}
+  }
+
   render() {
     const desc1 = this.props.navigation.getParam('desc', 'x')
     if (desc1 != 'x') {
@@ -77,8 +87,13 @@ export default class ListaAtividade extends Component {
 
       this.novaAtividade = { atividades }
     } else {
-      this.recuperar
+      
+      let ativ = this.recuperar
+      this.novaAtividade = {ativ}
+    //  this.setState({docs: ativ})
+      
     }
+
     return (
       <View style={styles.tela}>
 
@@ -123,14 +138,15 @@ export default class ListaAtividade extends Component {
         </ScrollView>
 
         <View style={styles.barraInferior}>
-          {//  <Button onPress={this.recuperar} title='recuperar2'></Button> 
-          }
+
+        {//  <Button onPress={this.recuperar} title='recuperar2'></Button>
+        }
           <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
             <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>
 
         </View>
-      </View>
+      </View>   
     );
   }
 }
