@@ -7,8 +7,41 @@ const { width: WIDTH } = Dimensions.get('window')
 
 export default class TelaLogin extends Component 
 {
+    static navigationOptions = {
+        title: "Sair",
+        color: "FFF"
+    }
+    
+    constructor (props)
+    {
+        super (props)
+
+        this.state = {
+            email: '',
+            password: '',
+            warning: ''
+        }
+    }
+    
     Entrar = () => {
-        this.props.navigation.navigate('home')
+        var emailRegex = new RegExp('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
+
+        var notNull = this.state.email && this.state.password
+        var fullPassword = this.state.password.length > 5
+        var validEmail = emailRegex.test(this.state.email)
+
+        if (notNull && fullPassword && validEmail)
+        {
+            this.setState({warning: ''})
+            this.props.navigation.navigate('home')
+        }
+        else
+        {
+            if (!notNull)
+                this.setState({warning: 'Todos os campos devem ser preenchidos!'})
+            else if (!fullPassword || !validEmail)
+                this.setState({warning: 'Email e/ou senha inválido(s)!'})
+        }
     }  
 
 	render ()
@@ -28,6 +61,7 @@ export default class TelaLogin extends Component
                         autoCapitalize = 'none'
                         autoCorrect = {false}
                         onSubmitEditing = {() => this.passwordInput.focus()}
+                        onChangeText = {(email) => this.setState({email})}
                     />
                     <TextInput
                         style = {Styles.input}
@@ -36,6 +70,7 @@ export default class TelaLogin extends Component
                         secureTextEntry
                         returnKeyType = 'go'
                         ref = {(input) => this.passwordInput = input}
+                        onChangeText = {(password) => this.setState({password})}
                     />
                     <TouchableOpacity 
                         style = {Styles.button}
@@ -44,6 +79,7 @@ export default class TelaLogin extends Component
                         <Text style={Styles.buttonText}>Entrar</Text>
                     </TouchableOpacity>
                     </View>
+                    <Text style={Styles.message}>{this.state.warning}</Text>
                     <Text style={Styles.footer}>MySchedule © UFPI, 2019</Text>
                 </View>
             </View>
@@ -100,5 +136,11 @@ const Styles = StyleSheet.create({
         marginTop: 100, 
         fontSize: 10, 
         color: '#21409a'
+    },
+    message:
+    {
+        marginTop: 50,
+        fontSize: 12,
+        color: 'red'
     }
 })
