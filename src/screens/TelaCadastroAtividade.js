@@ -1,4 +1,4 @@
-
+﻿
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -133,13 +133,13 @@ export default class CadastroAtividade extends Component {
         'Digite uma data válida')
       return false
     }
-    if ((parseInt(this.state.date.getHours()) < parseInt(x.getHours()) && parseInt(dia) == x.getDate())
-      || (parseInt(this.state.date.getMinutes()) < parseInt(x.getMinutes()) && parseInt(this.state.date.getHours()) == parseInt(x.getHours()))) {
-      Alert.alert(
-        'Hora Inválida!',
-        'Digite uma hora válida')
-      return false
-    }
+    if( (parseInt(dia) == parseInt(x.getDate()) &&  parseInt(this.state.date.getHours()) < parseInt(x.getHours()) )
+      ||(parseInt(this.state.date.getMinutes()) < parseInt(x.getMinutes()) &&  parseInt(this.state.date.getHours()) == parseInt(x.getHours()) && parseInt(dia) == parseInt(x.getDate()) )  ){
+        Alert.alert(
+          'Hora Inválida!',
+          'Digite uma hora válida',)
+          return false
+      }
 
 
     return true
