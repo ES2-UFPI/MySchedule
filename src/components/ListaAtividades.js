@@ -112,7 +112,8 @@ export default class ListaAtividade extends Component {
           </View>
         </View>
 
-        <Visualizar
+        <Visualizar 
+          navigation={this.props.navigation}
           isVisible={this.state.showVizualizar}
           style={styles.visualizar}
           cancelar={() => this.setState({ showVizualizar: false })}
@@ -141,7 +142,7 @@ export default class ListaAtividade extends Component {
 
         {//  <Button onPress={this.recuperar} title='recuperar2'></Button>
         }
-          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
+          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade', {navigation: this.props.navigation} )} extraData={this.state} >
             <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>
 

@@ -27,6 +27,18 @@ export default class Visualizar extends Component {
         }
 
     }
+
+    editar()  {
+        this.props.navigation.navigate('editar')
+        {/*
+        let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
+        for (let i = 0; i < docs.length; i++){
+            if(docs[i].key == this.props.chave) {
+            }
+        }
+        */}
+    }
+
     excluir = async () => {
         let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
         for (let i = 0; i < docs.length; i++) {
@@ -97,7 +109,7 @@ export default class Visualizar extends Component {
                             <Text style={styles.button}><Icon2 name='close' size={25}></Icon2></Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={this.editar}>
+                        <TouchableOpacity onPress={ () => {this.props.navigation.navigate('editar', {chave: this.props.chave}), this.setState({dialogVisible: false}, this.props.cancelar)}}>
                             <Text style={styles.button}><Icon name='pencil' size={20}></Icon></Text>
                         </TouchableOpacity>
 

@@ -8,13 +8,16 @@ import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/screens/TelaCadastroAtividade'
 import ListaAtividade from './src/components/ListaAtividades'
 import Login from './src/components/login'
+import Editar from './src/components/editar'
 
 
 const navigator = createDrawerNavigator({
   home: ListaAtividade,
+  editar: Editar,
+  //home: Editar,
   dias: Dias,
   cadastroDeAtividade: CadastroAtividade,
-  login: Login
+  login: Login, 
 })
 const App = createAppContainer(navigator);
 
