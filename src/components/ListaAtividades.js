@@ -24,7 +24,7 @@ export default class ListaAtividade extends Component {
     this.ref = firebase.firestore().collection('tasks')
     this.state = {
       docs: [],
-      showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',
+      showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',doc:null
     }
 
     //let ativ = this.recuperar
@@ -63,7 +63,7 @@ export default class ListaAtividade extends Component {
   renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.atividadeContainer}
-      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key) })) }} >
+      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key)}), this.setState({doc:item.doc})) }} >
       <Text style={styles.titulo}> {item.descricao}</Text>
       <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
     </TouchableOpacity>
@@ -75,7 +75,7 @@ export default class ListaAtividade extends Component {
       querySnapshot.forEach(doc => {
         const {descricao,frequencia,dificuldade,data } = doc.data()
         docs.push({
-         // doc,
+          doc,
           key:doc.id,
           descricao,
           frequencia,
@@ -140,6 +140,7 @@ export default class ListaAtividade extends Component {
           frequencia={this.state.frequencia}
           data={this.state.data}
           chave={this.state.key}
+          doc={this.state.doc}
         >
         </Visualizar>
 

@@ -17,16 +17,19 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import Icon3 from 'react-native-vector-icons/Entypo'
 import AsyncStorage from '@react-native-community/async-storage'
 import { ConfirmDialog } from 'react-native-simple-dialogs';
+import firebase from 'react-native-firebase'
 
 export default class Visualizar extends Component {
 
     constructor(props) {
         super(props);
+        this.ref = firebase.firestore().collection('tasks')
         this.state = {
             dialogVisible: false
         }
 
     }
+    /*
     excluir = async () => {
         let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
         for (let i = 0; i < docs.length; i++) {
@@ -38,6 +41,10 @@ export default class Visualizar extends Component {
         AsyncStorage.setItem("atividades", JSON.stringify(docs));
         this.setState({ dialogVisible: false }, this.props.cancelar)
 
+    }*/
+    excluir = () =>{
+        this.props.doc.ref.delete()
+        this.setState({ dialogVisible: false }, this.props.cancelar)
     }
 
     render() {
