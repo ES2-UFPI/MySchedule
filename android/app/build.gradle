@@ -107,6 +107,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true 
     }
     splits {
         abi {
@@ -138,6 +139,17 @@ android {
 }
 
 dependencies {
+
+    implementation project(':react-native-firebase')
+
+  // Firebase dependencies
+  implementation "com.google.android.gms:play-services-base:16.1.0"
+  implementation "com.google.firebase:firebase-core:16.0.8"
+  implementation "com.google.firebase:firebase-firestore:18.2.0"
+
+
+
+    implementation project(':react-native-firebase')
     implementation project(':react-native-vector-icons')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-gesture-handler')
@@ -152,3 +164,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+apply plugin: 'com.google.gms.google-services'

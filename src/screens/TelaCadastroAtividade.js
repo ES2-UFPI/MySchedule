@@ -18,6 +18,7 @@ import { Dropdown } from 'react-native-material-dropdown'
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import 'moment/locale/pt-br'
+import firebase from 'react-native-firebase'
 
 class Frequencia extends Component {
   constructor(props) {
@@ -73,8 +74,10 @@ export default class CadastroAtividade extends Component {
   }
   constructor(props) {
     super(props)
+    this.ref = firebase.firestore().collection('tasks')
     this.state = {
-      ...estadoInicial
+      ...estadoInicial,
+      //tasks:[]
     }
   }
 
@@ -154,10 +157,24 @@ export default class CadastroAtividade extends Component {
         data: this.state.date
 
       }
-      AsyncStorage.setItem("descricao", JSON.stringify(obj))
+
+      //AsyncStorage.setItem("descricao", JSON.stringify(obj))
+       
+      this.ref.add({
+        descricao: this.state.desc,
+        frequencia: this.state.frequencia,
+        dificuldade: this.state.dificuldade,
+        data: this.state.date
+            
+      }).then((data) =>{
+
+      }).catch((error) =>{
+          alert('erro')
+      })
+
 
       this.setState({ ...estadoInicial })
-      this.props.navigation.navigate('home', {desc: obj.descricao,data: this.state.date})
+      this.props.navigation.navigate('home')
     }
   }
 

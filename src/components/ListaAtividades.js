@@ -11,6 +11,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Visualizar from './VisualizarAtividade'
+import firebase from 'react-native-firebase'
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
@@ -20,22 +21,23 @@ export default class ListaAtividade extends Component {
 
   constructor(props) {
     super(props);
-
+    this.ref = firebase.firestore().collection('tasks')
     this.state = {
       docs: [],
       showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',
     }
 
-    let ativ = this.recuperar
-    this.novaAtividade = {ativ}
+    //let ativ = this.recuperar
+    //this.novaAtividade = {ativ}
   }
 
+  /*
   recuperar = async () => {
     let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
     this.setState({ docs: atividades })
     return atividades
-  }
-
+  }*/
+  /*
   RecuperarData = async () => {
     let novaAtividade = {
       desc: parsed.descricao,
@@ -51,29 +53,46 @@ export default class ListaAtividade extends Component {
     //this.setState({ docs }); 
     AsyncStorage.setItem("atividades", JSON.stringify(docs));
 
-  }
-
+  }*/
+    /*
   novaAtividade = (docs) => {
     this.setState({ docs })
     AsyncStorage.setItem("atividades", JSON.stringify(docs));
-  }
+  }*/
 
   renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.atividadeContainer}
-      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.desc }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key) })) }} >
-      <Text style={styles.titulo}> {item.desc}</Text>
+      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key) })) }} >
+      <Text style={styles.titulo}> {item.descricao}</Text>
       <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
     </TouchableOpacity>
   );
 
   componentDidMount() {
-  
-    let ativ = this.recuperar
-    this.novaAtividade = {ativ}
+    this.unsubscribe = this.ref.onSnapshot(querySnapshot => {
+      const docs = []
+      querySnapshot.forEach(doc => {
+        const {descricao,frequencia,dificuldade,data } = doc.data()
+        docs.push({
+         // doc,
+          key:doc.id,
+          descricao,
+          frequencia,
+          dificuldade,
+          data
+          
+        })
+      })
+      console.log(docs)
+      this.setState({ docs })
+
+    })
   }
 
   render() {
+    //alert(this.state.docs.desc)
+    /*
     const desc1 = this.props.navigation.getParam('desc', 'x')
     if (desc1 != 'x') {
 
@@ -92,7 +111,7 @@ export default class ListaAtividade extends Component {
       this.novaAtividade = {ativ}
     //  this.setState({docs: ativ})
       
-    }
+    }*/
 
     return (
       <View style={styles.tela}>
@@ -103,7 +122,7 @@ export default class ListaAtividade extends Component {
           </TouchableOpacity>
 
           <Text style={styles.tituloBarra}>
-            My Schedule
+            MySchedule
           </Text>
 
           <View style={styles.barraSuperior}>
