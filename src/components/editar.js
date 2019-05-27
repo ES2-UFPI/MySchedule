@@ -99,63 +99,59 @@ export default class Editar extends Component {
     }
     render(){
         return (
-
-            <View style={styles.container}>
-                <View style={styles.background}>
-                    <Text Style={styles.texto1}>Editar atividade</Text>
-                </View>
+          <View style={styles.container}>
+            <View style={styles.background}>
+              <Text style={styles.texto}>Editar atividade</Text>
+            </View>
             <View style={styles.tela}>
-                <TextInput style={styles.input} placeholder={"Descrição antiga"}/>
-
-                <Text>Frequência</Text>
-                <Picker
-                    selectedValue={this.state.language}
-                    style={{height: 50, width: 200}}
-                    onValueChange={(itemValue, itemIndex) =>
-                    this.setState({language: "Semanalmente"})
-                }>
-                    <Picker.Item label="Semanalmente" value="Semanalmente" />
-                    <Picker.Item label="Mensalmente" value="Mensalmente" />
-                    <Picker.Item label="Anualmente" value="Anualmente" />
-                    <Picker.Item label="Não se repete" value="Não se repete" />
-                </Picker> 
-                <Text>Dificuldade</Text>
-                <Picker
-                    selectedValue={this.state.language}
-                    style={{height: 50, width: 100}}
-                    onValueChange={(itemValue, itemIndex) =>
-                    this.setState({language: "Fácil"})
-                }>
-                    <Picker.Item label="Facil" value="Fácil" />
-                    <Picker.Item label="Médio" value="Difícil" />
-                    <Picker.Item label="Difícil" value="Difícil" />
-                </Picker>
-
-                <TouchableOpacity style={styles.button} onPress={this.handleDateAndroidChanged}>
-               <Text style={styles.buttonText}>
+              <TextInput style={styles.input} placeholder={"Descrição antiga"}/>
+            <View style={styles.picker}>
+              <Text  Style={styles.texto}>Frequência</Text>
+              <Picker
+                selectedValue={this.state.language}
+                style={{height: 50, width: 200}}
+                onValueChange={(itemValue, itemIndex) =>
+                this.setState({language: "Semanalmente"})
+              }>
+                <Picker.Item label="Semanalmente" value="Semanalmente" />
+                <Picker.Item label="Mensalmente" value="Mensalmente" />
+                <Picker.Item label="Anualmente" value="Anualmente" />
+                <Picker.Item label="Não se repete" value="Não se repete" />
+              </Picker> 
+            </View>
+            <View>
+              <Text>Dificuldade</Text>
+              <Picker
+                selectedValue={this.state.language}
+                style={{height: 50, width: 100}}
+                onValueChange={(itemValue, itemIndex) =>
+                this.setState({language: "Fácil"})
+              }>
+                <Picker.Item label="Fácil" value="Fácil" />
+                <Picker.Item label="Médio" value="Difícil" />
+                <Picker.Item label="Difícil" value="Difícil" />
+              </Picker>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={this.handleDateAndroidChanged}>
+              <Text style={styles.buttonText}>
               <Icon name='calendar' size={15} ></Icon>
               {moment(this.state.date).locale('pt-br').format('   ddd, D [de] MMMM')}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={this.handleTimeAndroidChanged}>
-            <Text style={styles.buttonText}>
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={this.handleTimeAndroidChanged}>
+              <Text style={styles.buttonText}>
               <Icon name='clock-o' size={15} ></Icon>
               {moment(this.state.date).format('   HH : mm')}
-            </Text>
-          </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button2}
-            onPress={this.salvarDados}>
-            <Text style={styles.botaoSalvar}>Salvar</Text>
-          </TouchableOpacity>
-        
-        
-
-                </View>                  
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button2}
+              onPress={this.salvarDados}>
+              <Text style={styles.botaoSalvar}>Atualizar</Text>
+            </TouchableOpacity>
+          </View>                  
 
 
-            </View>
+        </View>
         )
     }
 }
@@ -164,40 +160,37 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, 
         justifyContent: 'center', 
-        alignItems: 'center',
-        borderRadius: 4,
-   
+        alignItems: 'center'
     },
     background: {
         flex: 2,
         alignItems: 'flex-start',
         justifyContent: 'center',
-        color: '#fff',
-        
+        color: 'blue',
+        textAlign: 'center',
+        fontWeight: 'bold',
       },
     tela: {
       paddingTop: 5,
       flex: 8,
       paddingHorizontal: 30
     },
-  
-    texto1: {
-      fontSize: 35,
+    texto: {
+      fontSize: 20,
       textAlign: 'center',
       marginVertical: 15,
-      color: '#000000',
-      fontWeight: 'bold',
     },
     input: {
       paddingBottom: 5,
       textAlign: 'center',
       borderRadius: 25,
       fontSize: 16,
-      marginTop: 15,
+      //marginTop: 15,
       elevation: 1,
       backgroundColor: '#fff'
     },
     button: {
+      width: 300,
       alignItems: 'center',
       height: 45,
       marginTop: 20,
@@ -224,5 +217,10 @@ const styles = StyleSheet.create({
       color: 'white',
       padding: 8,
       fontSize: 20,
+    },
+    picker: {
+      alignItems: 'flex-start',
+      paddingTop: 5,
+      marginTop: 20 
     }
   });

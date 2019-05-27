@@ -12,9 +12,9 @@ import Editar from './src/components/editar'
 
 
 const navigator = createDrawerNavigator({
-  home: ListaAtividade,
-  editar: Editar,
-  //home: Editar,
+  //home: ListaAtividade,
+  //editar: Editar,
+  home: Editar,
   dias: Dias,
   cadastroDeAtividade: CadastroAtividade,
   login: Login, 
