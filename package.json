@@ -40,5 +40,6 @@
   "engines": {
     "node": "11.14.0",
     "npm": "6.7.0"
-  }
+  },
+  "optionalDependencies": {}
 }
