@@ -9,7 +9,7 @@ import {
   Text,
 
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
+
 import { FlatList } from 'react-native-gesture-handler';
 import TelaCadastro from '../screens/TelaCadastroAtividade'
 import moment from 'moment';
@@ -30,6 +30,7 @@ export default class Dia extends Component {
 	dataAtual: new Date()
   };
 
+  /*
   recuperar = async () => {
     let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
     this.setState({ docs })
@@ -57,7 +58,7 @@ export default class Dia extends Component {
     <TelaCadastro>
 
     </TelaCadastro>
-  };
+  };*/
 
   handleDateAndroidChanged = () => {
     DatePickerAndroid.open({
