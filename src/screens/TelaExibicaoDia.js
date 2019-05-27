@@ -30,35 +30,7 @@ export default class Dia extends Component {
 	dataAtual: new Date()
   };
 
-  /*
-  recuperar = async () => {
-    let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
-    this.setState({ docs })
-  }
-
-  RecuperarData = async () => {
-
-    let value = await AsyncStorage.getItem('descricao');
-    let parsed = JSON.parse(value)
-
-    let novaAtividade = {
-      desc: parsed.descricao,
-      frequencia: parsed.frequencia,
-      dificuldade: parsed.dificuldade,
-      data: parsed.data,
-      key: this.state.docs.length.toString()
-    }
-
-    let docs = this.state.docs;
-    docs.push(novaAtividade);
-
-    this.setState({ docs });
-    AsyncStorage.setItem("atividades", JSON.stringify(docs));
-
-    <TelaCadastro>
-
-    </TelaCadastro>
-  };*/
+ 
 
   handleDateAndroidChanged = () => {
     DatePickerAndroid.open({
