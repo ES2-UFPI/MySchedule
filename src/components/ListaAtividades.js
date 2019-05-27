@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text, Button
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
+
 import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -28,38 +28,10 @@ export default class ListaAtividade extends Component {
       showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',doc:null
     }
 
-    //let ativ = this.recuperar
-    //this.novaAtividade = {ativ}
+   
   }
 
-  /*
-  recuperar = async () => {
-    let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
-    this.setState({ docs: atividades })
-    return atividades
-  }*/
-  /*
-  RecuperarData = async () => {
-    let novaAtividade = {
-      desc: parsed.descricao,
-      frequencia: parsed.frequencia,
-      dificuldade: parsed.dificuldade,
-      data: parsed.data,
-      key: this.state.docs.length.toString()
-    }
-
-    let docs = this.state.docs
-    docs.push(novaAtividade);
-
-    //this.setState({ docs }); 
-    AsyncStorage.setItem("atividades", JSON.stringify(docs));
-
-  }*/
-    /*
-  novaAtividade = (docs) => {
-    this.setState({ docs })
-    AsyncStorage.setItem("atividades", JSON.stringify(docs));
-  }*/
+  
 
   renderItem = ({ item }) => (
     <TouchableOpacity
@@ -67,7 +39,7 @@ export default class ListaAtividade extends Component {
       onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.date }), this.setState({ key: String(item.key)}), this.setState({doc:item.doc})) }} >
       <Text style={styles.titulo}> {item.descricao}</Text>
       <Text style={styles.hora}> {moment(item.date).format('ddd, D [de] MMMM')} </Text>
-     {/* <Text style={styles.hora}> {item.data} </Text>*/}
+  
     </TouchableOpacity>
   );
 
@@ -76,7 +48,6 @@ export default class ListaAtividade extends Component {
       const docs = []
       querySnapshot.forEach(doc => {
         const {descricao,frequencia,dificuldade,data } = doc.data()
-       // alert(data)
         let date = new Date(data)
         docs.push({
           doc,
@@ -95,28 +66,7 @@ export default class ListaAtividade extends Component {
   }
 
   render() {
-    //alert(this.state.docs.desc)
-    /*
-    const desc1 = this.props.navigation.getParam('desc', 'x')
-    if (desc1 != 'x') {
-
-      let novaAtividade = {
-        key: this.state.docs.length.toString(),
-        desc: desc1,
-      }
-
-      let atividades = this.state.docs;
-      atividades.push(novaAtividade);
-
-      this.novaAtividade = { atividades }
-    } else {
-      
-      let ativ = this.recuperar
-      this.novaAtividade = {ativ}
-    //  this.setState({docs: ativ})
-      
-    }*/
-
+    
     return (
       <View style={styles.tela}>
 
@@ -163,8 +113,7 @@ export default class ListaAtividade extends Component {
 
         <View style={styles.barraInferior}>
 
-        {//  <Button onPress={this.recuperar} title='recuperar2'></Button>
-        }
+       
           <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
             <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>

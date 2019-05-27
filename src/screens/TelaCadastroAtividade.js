@@ -15,7 +15,7 @@ import {
 import moment from 'moment'
 import Imagem from '../imgs/office.jpg'
 import { Dropdown } from 'react-native-material-dropdown'
-import AsyncStorage from '@react-native-community/async-storage'
+
 import Icon from 'react-native-vector-icons/FontAwesome'
 //import 'moment/locale/pt-br'
 
@@ -159,8 +159,7 @@ export default class CadastroAtividade extends Component {
 
       }
 
-      //AsyncStorage.setItem("descricao", JSON.stringify(obj))
-       
+     
       this.ref.add({
         descricao: this.state.desc,
         frequencia: this.state.frequencia,
@@ -175,7 +174,7 @@ export default class CadastroAtividade extends Component {
 
 
       this.setState({ ...estadoInicial })
-      this.props.navigation.navigate('home')
+      this.props.navigation.navigate('lista')
     }
   }
 
