@@ -12,6 +12,7 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Visualizar from './VisualizarAtividade'
 import firebase from 'react-native-firebase'
+//import 'moment/locale/pt-br'
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
@@ -63,9 +64,10 @@ export default class ListaAtividade extends Component {
   renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.atividadeContainer}
-      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.data }), this.setState({ key: String(item.key)}), this.setState({doc:item.doc})) }} >
+      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.date }), this.setState({ key: String(item.key)}), this.setState({doc:item.doc})) }} >
       <Text style={styles.titulo}> {item.descricao}</Text>
-      <Text style={styles.hora}> {moment(item.data).format('ddd, D [de] MMMM')} </Text>
+      <Text style={styles.hora}> {moment(item.date).format('ddd, D [de] MMMM')} </Text>
+     {/* <Text style={styles.hora}> {item.data} </Text>*/}
     </TouchableOpacity>
   );
 
@@ -74,17 +76,19 @@ export default class ListaAtividade extends Component {
       const docs = []
       querySnapshot.forEach(doc => {
         const {descricao,frequencia,dificuldade,data } = doc.data()
+       // alert(data)
+        let date = new Date(data)
         docs.push({
           doc,
           key:doc.id,
           descricao,
           frequencia,
           dificuldade,
-          data
+          date
           
         })
       })
-      console.log(docs)
+
       this.setState({ docs })
 
     })

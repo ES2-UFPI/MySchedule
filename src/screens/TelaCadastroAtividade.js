@@ -17,7 +17,8 @@ import Imagem from '../imgs/office.jpg'
 import { Dropdown } from 'react-native-material-dropdown'
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import 'moment/locale/pt-br'
+//import 'moment/locale/pt-br'
+
 import firebase from 'react-native-firebase'
 
 class Frequencia extends Component {
@@ -164,7 +165,7 @@ export default class CadastroAtividade extends Component {
         descricao: this.state.desc,
         frequencia: this.state.frequencia,
         dificuldade: this.state.dificuldade,
-        data: this.state.date
+        data: String(moment(this.state.date).format('MMM DD YYYY HH:mm'))
             
       }).then((data) =>{
 
