@@ -67,7 +67,10 @@ const estadoInicial = { desc: '', date: new Date(), frequencia: 'Não se repete'
 export default class CadastroAtividade extends Component {
   static navigationOptions = {
     title: "Nova Atividade",
-    color: "FFF",
+    color: "#FFF",
+    headerStyle: { backgroundColor: '#21409a' },
+    headerTitleStyle: { color: '#FFF' },
+ 
   }
   constructor(props) {
     super(props)
