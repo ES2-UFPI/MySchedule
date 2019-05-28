@@ -20,7 +20,6 @@ const navigator = createDrawerNavigator({
       title: 'Lista de Atividades'
     },
   },
-
   lista: {
     screen: createStackNavigator({
       screen: Dias,
