@@ -11,17 +11,24 @@ import Login from './src/screens/TelaLogin'
 
 
 const navigator = createDrawerNavigator({
-  home: 
-    createStackNavigator({
+  home: {
+    screen: createStackNavigator({
       screen: ListaAtividade,
       cadastroDeAtividade: CadastroAtividade
     }),
-  
-  lista: 
-    createStackNavigator({
+    navigationOptions: {
+      title: 'Lista de Atividades'
+    },
+  },
+  lista: {
+    screen: createStackNavigator({
       screen: Dias,
       cadastroDeAtividade: CadastroAtividade
-    }), 
+    }),
+    navigationOptions: {
+      title: 'Atividades do dia'
+    },
+  },
   login: Login
 })
 const App = createAppContainer(navigator);
