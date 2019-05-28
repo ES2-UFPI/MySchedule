@@ -15,8 +15,8 @@ import firebase from 'react-native-firebase'
 
 export default class Dia extends Component {
   static navigationOptions = {
-    title: "Atividades do Dia",
-    color: "FFF"
+    header: () => null, 
+    tabBarVisible: false 
   }
 
   constructor(props) {
