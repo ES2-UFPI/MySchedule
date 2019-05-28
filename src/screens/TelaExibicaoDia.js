@@ -82,7 +82,7 @@ export default class Dia extends Component {
   renderItem = ({ item }) => (
     <TouchableOpacity style={styles.atividadeContainer} onPress={this.telaAtividade}>
       <Text style={styles.titulo}> {item.descricao}</Text>
-      <Text style={styles.hora}> {moment(item.data).format('HH:mm')} </Text>
+      <Text style={styles.hora}> {moment(item.date).format('HH:mm')} </Text>
     </TouchableOpacity>
   );
 
