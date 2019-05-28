@@ -4,9 +4,8 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Text, Button
+  Text,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
 import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -18,6 +17,7 @@ export default class ListaAtividade extends Component {
   static navigationOptions = {
     header: () => null, 
     tabBarVisible: false 
+
   }
 
   constructor(props) {
@@ -29,7 +29,6 @@ export default class ListaAtividade extends Component {
     }
   }
 
-
   renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.atividadeContainer}
@@ -37,6 +36,7 @@ export default class ListaAtividade extends Component {
       <Text style={styles.titulo}> {item.descricao}</Text>
       <Text style={styles.hora}> {moment(item.date).format('ddd, D [de] MMMM')} </Text>
       {/* <Text style={styles.hora}> {item.data} </Text>*/}
+
     </TouchableOpacity>
   );
 
@@ -54,12 +54,10 @@ export default class ListaAtividade extends Component {
           frequencia,
           dificuldade,
           date
-
         })
       })
 
       this.setState({ docs })
-
     })
   }
 
@@ -104,11 +102,10 @@ export default class ListaAtividade extends Component {
         </ScrollView>
 
         <View style={styles.barraInferior}>
-          
+
           <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
             <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>
-
         </View>
       </View>
     );
@@ -183,7 +180,7 @@ const styles = StyleSheet.create({
   barraInferior: {
     justifyContent: "space-between",
     alignContent: "flex-end",
-    marginVertical: 12.5
+    marginVertical: 12.5,
   },
   buttonText: {
     color: '#fff',

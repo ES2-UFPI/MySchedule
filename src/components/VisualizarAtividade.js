@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import {
-    ScrollView,
     View,
-    Button,
     StyleSheet,
     TouchableOpacity,
     Text,
     Modal,
     TouchableWithoutFeedback,
-
-
 } from 'react-native';
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
-import Icon3 from 'react-native-vector-icons/Entypo'
-import AsyncStorage from '@react-native-community/async-storage'
 import { ConfirmDialog } from 'react-native-simple-dialogs';
 import firebase from 'react-native-firebase'
 
@@ -27,21 +21,8 @@ export default class Visualizar extends Component {
         this.state = {
             dialogVisible: false
         }
-
     }
-    /*
-    excluir = async () => {
-        let docs = JSON.parse(await AsyncStorage.getItem('atividades'));
-        for (let i = 0; i < docs.length; i++) {
-            if (docs[i].key == this.props.chave) {
-                docs.splice(i, i)
-            }
-        }
 
-        AsyncStorage.setItem("atividades", JSON.stringify(docs));
-        this.setState({ dialogVisible: false }, this.props.cancelar)
-
-    }*/
     excluir = () =>{
         this.props.doc.ref.delete()
         this.setState({ dialogVisible: false }, this.props.cancelar)
@@ -58,14 +39,13 @@ export default class Visualizar extends Component {
         return (
             <Modal onRequestClose={this.props.cancelar}
                 visible={this.props.isVisible}
-                animationType='none'
+                animationType='fade'
                 transparent={true}>
                 <TouchableWithoutFeedback onPress={this.props.cancelar}>
                     <View style={styles.offset}></View>
                 </TouchableWithoutFeedback>
 
                 <View style={styles.container}>
-
                     <ConfirmDialog
                         title="Excluir Atividade?"
                         message="Deseja realmente excluir essa atividade?"
@@ -80,60 +60,53 @@ export default class Visualizar extends Component {
                             onPress: () => this.setState({ dialogVisible: false })
                         }}
                     />
-                    <Text style={styles.header}>{this.props.desc}</Text>
-                    <Text
-                        style={styles.texto}>
-                        <Icon3 name='dot-single' size={20}></Icon3>
-                        {data} às
-                        {moment(this.props.data).format(" HH : mm")}
-                    </Text>
-                    <Text
-                        style={styles.texto}>
-                        <Icon3 name='dot-single' size={20}></Icon3>
-                        Repete : {this.props.frequencia}
-                    </Text>
-                    <Text
-                        style={styles.texto}>
-                        <Icon3 name='dot-single' size={20}></Icon3>
-                        Dificuldade : {this.props.dificuldade}
-                    </Text>
 
+                    <View style = {styles.modal}>
+                        <Text style={styles.header}>{this.props.desc}</Text>
+                        <Text
+                            style={styles.texto}>
+                            {data} às
+                            {moment(this.props.data).format(" HH : mm")}
+                        </Text>
+                        <Text
+                            style={styles.texto}>
+                            Repete : {this.props.frequencia}
+                        </Text>
+                        <Text
+                            style={styles.texto}>
+                            Dificuldade : {this.props.dificuldade}
+                        </Text>
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <TouchableOpacity onPress={this.props.cancelar}>
-                            <Text style={styles.button}><Icon2 name='close' size={25}></Icon2></Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <TouchableOpacity onPress={this.props.cancelar}>
+                                <Text style={styles.button}><Icon2 name='left' size={25}></Icon2></Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity onPress={this.editar}>
-                            <Text style={styles.button}><Icon name='pencil' size={20}></Icon></Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={this.editar}>
+                                <Text style={styles.button}><Icon name='pencil' size={20}></Icon></Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => this.setState({ dialogVisible: true })}>
-                            <Text style={styles.button}><Icon name='trash-o' size={20}></Icon></Text>
-                        </TouchableOpacity>
-
+                            <TouchableOpacity onPress={() => this.setState({ dialogVisible: true })}>
+                                <Text style={styles.button}><Icon name='trash-o' size={20}></Icon></Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
 
                 <TouchableWithoutFeedback onPress={this.props.cancelar}>
                     <View style={styles.offset}></View>
                 </TouchableWithoutFeedback>
-
-
             </Modal>
         )
     }
 }
 
-
-
 var styles = StyleSheet.create({
     container: {
-        flex: 2,
-        borderWidth: 1,
-        borderColor: 'black',
-        backgroundColor: 'white',
-        justifyContent: 'space-between',
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingBottom: 20,
+        backgroundColor: 'rgba(0,0,0,0.7)',
     },
     offset: {
         flex: 1,
@@ -142,20 +115,23 @@ var styles = StyleSheet.create({
     button: {
         margin: 20,
         marginRight: 30,
-        //color:"red"
     },
     header: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
         backgroundColor: '#21409a',
         color: 'white',
         textAlign: 'center',
         padding: 15,
         fontSize: 20,
     },
+    modal: {
+        backgroundColor: 'white',
+        borderRadius: 15,
+    },
     texto: {
-
-        fontSize: 20,
-        marginLeft: 20,
-        padding: 20,
-    }
-
+        fontSize: 14,
+        padding: 4,
+        paddingHorizontal: 20,
+    },
 })
