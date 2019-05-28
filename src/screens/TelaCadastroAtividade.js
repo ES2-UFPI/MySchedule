@@ -175,7 +175,7 @@ export default class CadastroAtividade extends Component {
 
 
       this.setState({ ...estadoInicial })
-      this.props.navigation.navigate('home')
+      this.props.navigation.goBack()
     }
   }
 

@@ -16,8 +16,8 @@ import firebase from 'react-native-firebase'
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
-    title: "Lista de Atividades",
-    color: "FFF"
+    header: () => null, 
+    tabBarVisible: false 
   }
 
   constructor(props) {
@@ -25,49 +25,18 @@ export default class ListaAtividade extends Component {
     this.ref = firebase.firestore().collection('tasks')
     this.state = {
       docs: [],
-      showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '',doc:null
+      showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '', doc: null
     }
-
-    //let ativ = this.recuperar
-    //this.novaAtividade = {ativ}
   }
 
-  /*
-  recuperar = async () => {
-    let atividades = JSON.parse(await AsyncStorage.getItem('atividades'));
-    this.setState({ docs: atividades })
-    return atividades
-  }*/
-  /*
-  RecuperarData = async () => {
-    let novaAtividade = {
-      desc: parsed.descricao,
-      frequencia: parsed.frequencia,
-      dificuldade: parsed.dificuldade,
-      data: parsed.data,
-      key: this.state.docs.length.toString()
-    }
-
-    let docs = this.state.docs
-    docs.push(novaAtividade);
-
-    //this.setState({ docs }); 
-    AsyncStorage.setItem("atividades", JSON.stringify(docs));
-
-  }*/
-    /*
-  novaAtividade = (docs) => {
-    this.setState({ docs })
-    AsyncStorage.setItem("atividades", JSON.stringify(docs));
-  }*/
 
   renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.atividadeContainer}
-      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.date }), this.setState({ key: String(item.key)}), this.setState({doc:item.doc})) }} >
+      onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.date }), this.setState({ key: String(item.key) }), this.setState({ doc: item.doc })) }} >
       <Text style={styles.titulo}> {item.descricao}</Text>
       <Text style={styles.hora}> {moment(item.date).format('ddd, D [de] MMMM')} </Text>
-     {/* <Text style={styles.hora}> {item.data} </Text>*/}
+      {/* <Text style={styles.hora}> {item.data} </Text>*/}
     </TouchableOpacity>
   );
 
@@ -75,17 +44,17 @@ export default class ListaAtividade extends Component {
     this.unsubscribe = this.ref.onSnapshot(querySnapshot => {
       const docs = []
       querySnapshot.forEach(doc => {
-        const {descricao,frequencia,dificuldade,data } = doc.data()
-       // alert(data)
+        const { descricao, frequencia, dificuldade, data } = doc.data()
+        // alert(data)
         let date = new Date(data)
         docs.push({
           doc,
-          key:doc.id,
+          key: doc.id,
           descricao,
           frequencia,
           dificuldade,
           date
-          
+
         })
       })
 
@@ -95,28 +64,6 @@ export default class ListaAtividade extends Component {
   }
 
   render() {
-    //alert(this.state.docs.desc)
-    /*
-    const desc1 = this.props.navigation.getParam('desc', 'x')
-    if (desc1 != 'x') {
-
-      let novaAtividade = {
-        key: this.state.docs.length.toString(),
-        desc: desc1,
-      }
-
-      let atividades = this.state.docs;
-      atividades.push(novaAtividade);
-
-      this.novaAtividade = { atividades }
-    } else {
-      
-      let ativ = this.recuperar
-      this.novaAtividade = {ativ}
-    //  this.setState({docs: ativ})
-      
-    }*/
-
     return (
       <View style={styles.tela}>
 
@@ -128,11 +75,6 @@ export default class ListaAtividade extends Component {
           <Text style={styles.tituloBarra}>
             MySchedule
           </Text>
-
-          <View style={styles.barraSuperior}>
-            <Text style={styles.textDia}>11</Text>
-            <Text style={styles.textMes}>Agosto</Text>
-          </View>
         </View>
 
         <Visualizar
@@ -162,15 +104,13 @@ export default class ListaAtividade extends Component {
         </ScrollView>
 
         <View style={styles.barraInferior}>
-
-        {//  <Button onPress={this.recuperar} title='recuperar2'></Button>
-        }
+          
           <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('cadastroDeAtividade')} extraData={this.state} >
             <Text style={styles.buttonText}>Nova Atividade </Text>
           </TouchableOpacity>
 
         </View>
-      </View>   
+      </View>
     );
   }
 }
