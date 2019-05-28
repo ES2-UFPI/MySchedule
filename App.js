@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
-import { createStackNavigator, createAppContainer, createDrawerNavigator,DrawerNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer, createDrawerNavigator, DrawerNavigator } from "react-navigation";
 
 import Calendario from './src/components/Calendario';
 import Dias from './src/screens/TelaExibicaoDia';
@@ -11,10 +11,17 @@ import Login from './src/screens/TelaLogin'
 
 
 const navigator = createDrawerNavigator({
-  home: Login,
-  lista:ListaAtividade,
-  dias: Dias,
-  cadastroDeAtividade: CadastroAtividade,
+  home: 
+    createStackNavigator({
+      screen: ListaAtividade,
+      cadastroDeAtividade: CadastroAtividade
+    }),
+  
+  lista: 
+    createStackNavigator({
+      screen: Dias,
+      cadastroDeAtividade: CadastroAtividade
+    }), 
   login: Login
 })
 const App = createAppContainer(navigator);

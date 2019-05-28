@@ -10,7 +10,8 @@ export default class TelaLogin extends Component
 {
     static navigationOptions = {
         title: "Sair",
-        color: "FFF"
+        color: "FFF",
+        drawerLockMode: 'locked-open',
     }
     
     constructor (props)
@@ -35,7 +36,7 @@ export default class TelaLogin extends Component
         const user = await firebase.auth().signInWithEmailAndPassword(email,password)
         this.setState({warning:''})
         
-        this.props.navigation.navigate('lista')
+        this.props.navigation.navigate('home')
         }catch(err){
             this.setState({warning: 'Email e/ou senha inválido(s)!'})
             return

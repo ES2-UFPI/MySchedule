@@ -1,11 +1,9 @@
-﻿
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
-  ImageBackground,
   DatePickerAndroid,
   TimePickerAndroid,
   TouchableOpacity,
@@ -13,9 +11,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
-import Imagem from '../imgs/office.jpg'
 import { Dropdown } from 'react-native-material-dropdown'
-import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 //import 'moment/locale/pt-br'
 
@@ -71,7 +67,7 @@ const estadoInicial = { desc: '', date: new Date(), frequencia: 'Não se repete'
 export default class CadastroAtividade extends Component {
   static navigationOptions = {
     title: "Nova Atividade",
-    color: "FFF"
+    color: "FFF",
   }
   constructor(props) {
     super(props)
@@ -123,11 +119,11 @@ export default class CadastroAtividade extends Component {
         'Informe Uma Descrição')
       return false
     }
+
     let ano = this.state.date.getYear() + 1900
     let mes = this.state.date.getMonth() + 1
     let dia = this.state.date.getDate()
     let x = new Date()
-
 
     if ((parseInt(dia) < x.getDate() && parseInt(mes) == parseInt(x.getMonth() + 1) && parseInt(ano) == parseInt(x.getYear() + 1900))
       || (parseInt(ano) < parseInt(x.getYear() + 1900))
@@ -137,6 +133,7 @@ export default class CadastroAtividade extends Component {
         'Digite uma data válida')
       return false
     }
+
     if( (parseInt(dia) == parseInt(x.getDate()) &&  parseInt(this.state.date.getHours()) < parseInt(x.getHours()) )
       ||(parseInt(this.state.date.getMinutes()) < parseInt(x.getMinutes()) &&  parseInt(this.state.date.getHours()) == parseInt(x.getHours()) && parseInt(dia) == parseInt(x.getDate()) )  ){
         Alert.alert(
@@ -144,7 +141,6 @@ export default class CadastroAtividade extends Component {
           'Digite uma hora válida',)
           return false
       }
-
 
     return true
   }
@@ -158,8 +154,6 @@ export default class CadastroAtividade extends Component {
         data: this.state.date
 
       }
-
-      //AsyncStorage.setItem("descricao", JSON.stringify(obj))
        
       this.ref.add({
         descricao: this.state.desc,
@@ -173,9 +167,8 @@ export default class CadastroAtividade extends Component {
           alert('erro')
       })
 
-
       this.setState({ ...estadoInicial })
-      this.props.navigation.navigate('home')
+      this.props.navigation.goBack()
     }
   }
 
@@ -183,16 +176,9 @@ export default class CadastroAtividade extends Component {
 
     return (
       <View style={styles.container}>
-
-        <ImageBackground
-          source={Imagem}
-          style={styles.background}>
-          <Text style={styles.texto1}>Nova Atividade</Text>
-        </ImageBackground>
-
         <View style={styles.tela}>
           <TextInput style={styles.input}
-            placeholder="Descricão"
+            placeholder="Nome da atividade"
             onChangeText={desc => this.setState({ desc })}
             value={this.state.desc}
             returnKeyType='go' />
@@ -220,9 +206,7 @@ export default class CadastroAtividade extends Component {
             <Text style={styles.botaoSalvar}>Salvar</Text>
           </TouchableOpacity>
         </View>
-
       </View>
-
     );
   }
 }
@@ -271,11 +255,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#21409a'
   },
   buttonText: {
-    //color: '#fff',
-    //fontSize: 16,
-    //alignItems:'center',
-    //textAlign:'justify',
-    //marginTop: 10
     padding: 10
   },
   botaoSalvar: {
