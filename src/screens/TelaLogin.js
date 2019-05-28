@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, TouchableOpacity, TextInput, View, Text, Image } from 'react-native';
 
 import logo from '../imgs/logo.png';
+import firebase from 'react-native-firebase'
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -19,30 +20,27 @@ export default class TelaLogin extends Component
         this.state = {
             email: '',
             password: '',
-            warning: ''
+            warning: '',
         }
     }
     
-    Entrar = () => {
-        var emailRegex = new RegExp('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
-
+    login = async ()=>{
         var notNull = this.state.email && this.state.password
-        var fullPassword = this.state.password.length > 5
-        var validEmail = emailRegex.test(this.state.email)
-
-        if (notNull && fullPassword && validEmail)
-        {
-            this.setState({warning: ''})
-            this.props.navigation.navigate('home')
+        if (!notNull){
+            this.setState({warning: 'Todos os campos devem ser preenchidos!'})
+            return
         }
-        else
-        {
-            if (!notNull)
-                this.setState({warning: 'Todos os campos devem ser preenchidos!'})
-            else if (!fullPassword || !validEmail)
-                this.setState({warning: 'Email e/ou senha inválido(s)!'})
+        const { email, password} = this.state
+        try{
+        const user = await firebase.auth().signInWithEmailAndPassword(email,password)
+        this.setState({warning:''})
+        
+        this.props.navigation.navigate('lista')
+        }catch(err){
+            this.setState({warning: 'Email e/ou senha inválido(s)!'})
+            return
         }
-    }  
+    }
 
 	render ()
 	{
@@ -62,6 +60,7 @@ export default class TelaLogin extends Component
                         autoCorrect = {false}
                         onSubmitEditing = {() => this.passwordInput.focus()}
                         onChangeText = {(email) => this.setState({email})}
+
                     />
                     <TextInput
                         style = {Styles.input}
@@ -74,7 +73,7 @@ export default class TelaLogin extends Component
                     />
                     <TouchableOpacity 
                         style = {Styles.button}
-                        onPress = {this.Entrar}
+                        onPress = {this.login}
                     >
                         <Text style={Styles.buttonText}>Entrar</Text>
                     </TouchableOpacity>

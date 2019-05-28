@@ -11,7 +11,8 @@ import Login from './src/screens/TelaLogin'
 
 
 const navigator = createDrawerNavigator({
-  home: ListaAtividade,
+  home: Login,
+  lista:ListaAtividade,
   dias: Dias,
   cadastroDeAtividade: CadastroAtividade,
   login: Login
