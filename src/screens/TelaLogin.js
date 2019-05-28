@@ -2,11 +2,47 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, TouchableOpacity, TextInput, View, Text, Image } from 'react-native';
 
 import logo from '../imgs/logo.png';
+import firebase from 'react-native-firebase'
 
 const { width: WIDTH } = Dimensions.get('window')
 
 export default class TelaLogin extends Component 
 {
+    static navigationOptions = {
+        title: "Sair",
+        color: "FFF",
+        drawerLockMode: 'locked-open',
+    }
+    
+    constructor (props)
+    {
+        super (props)
+
+        this.state = {
+            email: '',
+            password: '',
+            warning: '',
+        }
+    }
+    
+    login = async ()=>{
+        var notNull = this.state.email && this.state.password
+        if (!notNull){
+            this.setState({warning: 'Todos os campos devem ser preenchidos!'})
+            return
+        }
+        const { email, password} = this.state
+        try{
+        const user = await firebase.auth().signInWithEmailAndPassword(email,password)
+        this.setState({warning:''})
+        
+        this.props.navigation.navigate('home')
+        }catch(err){
+            this.setState({warning: 'Email e/ou senha inválido(s)!'})
+            return
+        }
+    }
+
 	render ()
 	{
 		return (
@@ -24,6 +60,8 @@ export default class TelaLogin extends Component
                         autoCapitalize = 'none'
                         autoCorrect = {false}
                         onSubmitEditing = {() => this.passwordInput.focus()}
+                        onChangeText = {(email) => this.setState({email})}
+
                     />
                     <TextInput
                         style = {Styles.input}
@@ -32,11 +70,16 @@ export default class TelaLogin extends Component
                         secureTextEntry
                         returnKeyType = 'go'
                         ref = {(input) => this.passwordInput = input}
+                        onChangeText = {(password) => this.setState({password})}
                     />
-                    <TouchableOpacity style={Styles.button}>
+                    <TouchableOpacity 
+                        style = {Styles.button}
+                        onPress = {this.login}
+                    >
                         <Text style={Styles.buttonText}>Entrar</Text>
                     </TouchableOpacity>
                     </View>
+                    <Text style={Styles.message}>{this.state.warning}</Text>
                     <Text style={Styles.footer}>MySchedule © UFPI, 2019</Text>
                 </View>
             </View>
@@ -66,7 +109,8 @@ const Styles = StyleSheet.create({
         borderRadius: 25,
         fontSize: 16,
         marginTop: 15,
-        elevation: 1
+        elevation: 1,
+        backgroundColor: '#fff'
     },
     formContainer:
     {
@@ -92,5 +136,11 @@ const Styles = StyleSheet.create({
         marginTop: 100, 
         fontSize: 10, 
         color: '#21409a'
+    },
+    message:
+    {
+        marginTop: 50,
+        fontSize: 12,
+        color: 'red'
     }
 })

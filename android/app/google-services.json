@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "330891168181",
+    "firebase_url": "https://myschedule-bfb34.firebaseio.com",
+    "project_id": "myschedule-bfb34",
+    "storage_bucket": "myschedule-bfb34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330891168181:android:df4af27b9923757f",
+        "android_client_info": {
+          "package_name": "com.myschedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330891168181-7bhkfjkm156hl9gpp4peajosavnlmj5b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVzTNHx09E8XraPR_FmmLjg46eiDoIBQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330891168181-7bhkfjkm156hl9gpp4peajosavnlmj5b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
