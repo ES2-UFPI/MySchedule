@@ -26,7 +26,8 @@ export default class Dia extends Component {
             docs: [], dom: [], seg: [], ter: [], qua: [], qui: [], sex: [], sab: [],
 
             showVizualizar: false, desc: '', dificuldade: '', frequencia: '', data: null, key: '', doc: null,
-            dataAtual: new Date()
+            dataAtual: new Date(), s: new Date(), t: new Date(), qa: new Date(), qi: new Date(), se: new Date(), sa: new Date(), do: new Date()
+
         }
     }
 
@@ -65,29 +66,59 @@ export default class Dia extends Component {
             })
 
 
+
+            let data = this.state.do
+            data.setDate(data.getDate() - 7)
+
+            for (var i = 0; i < 7; i++) {
+                if (data.getDay() == 0) {
+                    let ddo = new Date(data), ds = new Date(data)
+                    let dt = new Date(data)
+                    let dqa = new Date(data)
+                    let dqi = new Date(data)
+                    let dse = new Date(data)
+                    let dsa = new Date(data)
+
+                    ds.setDate(data.getDate() + 1)
+                    dt.setDate(data.getDate() + 2)
+                    dqa.setDate(data.getDate() + 3)
+                    dqi.setDate(data.getDate() + 4)
+                    dse.setDate(data.getDate() + 5)
+                    dsa.setDate(data.getDate() + 6)
+
+                    this.setState({ do: ddo, s: ds, t: dt, qa: dqa, qi: dqi, se: dse, sa: dsa })
+                } else {
+                    data.setDate(data.getDate() + 1)
+                }
+            }
+
+
             const seg = [], ter = [], qua = [], qui = [], sex = [], sab = [], dom = []
 
             for (var i = 0; i < docs1.length; i++) {
-                // if (docs1[i].date.getMonth() === this.state.dataAtual.getMonth()) {
-                if (docs1[i].date.getDay() === 0) {
-                    dom.push(docs1[i])
-                } else if (docs1[i].date.getDay() === 1) {
-                    seg.push(docs1[i])
-                } else if (docs1[i].date.getDay() === 2) {
-                    ter.push(docs1[i])
-                } else if (docs1[i].date.getDay() === 3) {
-                    qua.push(docs1[i])
-                } else if (docs1[i].date.getDay() === 4) {
-                    qui.push(docs1[i])
-                } else if (docs1[i].date.getDay() === 5) {
-                    sex.push(docs1[i])
-                } else if (docs1[i].date.getDay() === 6) {
-                    sag.push(docs1[i])
+                if (docs1[i].date.getMonth() === this.state.do.getMonth()) {
+                    if (docs1[i].date.getDay() === 0 && docs1[i].date.getDate() === this.state.do.getDate()) {
+                        dom.push(docs1[i])
+                    } else if (docs1[i].date.getDay() === 1 && docs1[i].date.getDate() === this.state.s.getDate()) {
+                        seg.push(docs1[i])
+                    } else if (docs1[i].date.getDay() === 2 && docs1[i].date.getDate() === this.state.t.getDate()) {
+                        ter.push(docs1[i])
+                    } else if (docs1[i].date.getDay() === 3 && docs1[i].date.getDate() === this.state.qa.getDate()) {
+                        qua.push(docs1[i])
+                    } else if (docs1[i].date.getDay() === 4 && docs1[i].date.getDate() === this.state.qi.getDate()) {
+                        qui.push(docs1[i])
+                    } else if (docs1[i].date.getDay() === 5 && docs1[i].date.getDate() === this.state.se.getDate()) {
+                        sex.push(docs1[i])
+                    } else if (docs1[i].date.getDay() === 6 && docs1[i].date.getDate() === this.state.sa.getDate()) {
+                        sag.push(docs1[i])
+                    }
                 }
-                //  }
             }
 
             this.setState({ dom, seg, ter, qua, qui, sex, sab })
+
+
+
         })
     }
 
@@ -100,18 +131,17 @@ export default class Dia extends Component {
 
     proximoDia = () => {
 
-        let data = this.state.dataAtual
-        let dia = data.getDate() + 7
-        data.setDate(dia)
-        this.setState({ dataAtual: data })
+        let data = this.state.sa
+        data.setDate(data.getDate() + 8)
+        this.setState({ do: data })
         this.componentDidMount()
+
     }
 
     diaAnterio = () => {
-        let dia = this.state.dataAtual.getDate() - 7
-        let data = this.state.dataAtual
-        data.setDate(dia)
-        this.setState({ dataAtual: data })
+        let data = this.state.sa
+        data.setDate(data.getDate() - 8)
+        this.setState({ do: data })
         this.componentDidMount()
     }
 
@@ -132,8 +162,8 @@ export default class Dia extends Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.infoDia} onPress={this.handleDateAndroidChanged} extraData={this.state.dataAtual}>
-                        <Text style={styles.textDia} >{moment(this.state.dataAtual).locale('pt-br').format('D')}</Text>
-                        <Text style={styles.textMes} >{moment(this.state.dateAtual).locale('pt-br').format('MMMM')}</Text>
+                        {/*    <Text style={styles.textDia} >{moment(this.state.dataAtual).locale('pt-br').format('D')}</Text> */}
+                        <Text style={styles.textMes} >{moment(this.state.qa).locale('pt-br').format('MMMM')}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.botaoPass} onPress={this.proximoDia}>
@@ -144,34 +174,34 @@ export default class Dia extends Component {
 
                 <View style={styles.diasSemana}>
                     <View style={styles.diaEsemana}>
-                        <Text style={styles.dia}>  {this.state.dataAtual.getDate()} </Text>
+                        <Text style={styles.dia}> {this.state.do.getDate()}</Text>
                         <Text style={styles.textSemana}> Dom </Text>
                     </View>
 
                     <View style={styles.diaEsemana}>
-                        <Text style={styles.dia}>  {this.state.dataAtual.getDate() + 1} </Text>
-                        <Text style={styles.textSemana}> Seg  </Text>
+                        <Text style={styles.dia}> {this.state.s.getDate()}</Text>
+                        <Text style={styles.textSemana}> Seg </Text>
                     </View>
 
                     <View style={styles.diaEsemana}>
-                        <Text style={styles.dia}>  {this.state.dataAtual.getDate() + 2} </Text>
+                        <Text style={styles.dia}> {this.state.t.getDate()} </Text>
                         <Text style={styles.textSemana}> Ter </Text>
                     </View>
 
                     <View style={styles.diaEsemana}>
-                        <Text style={styles.dia}>  {this.state.dataAtual.getDate() + 3}</Text>
+                        <Text style={styles.dia}> {this.state.qa.getDate()}</Text>
                         <Text style={styles.textSemana}> Qua </Text>
                     </View>
                     <View style={styles.diaEsemana}>
-                        <Text style={styles.dia}> {this.state.dataAtual.getDate() + 4}</Text>
+                        <Text style={styles.dia}> {this.state.qi.getDate()}</Text>
                         <Text style={styles.textSemana}> Qui </Text>
                     </View>
                     <View style={styles.diaEsemana}>
-                        <Text style={styles.dia}> {this.state.dataAtual.getDate() + 5}</Text>
+                        <Text style={styles.dia}> {this.state.se.getDate()}</Text>
                         <Text style={styles.textSemana}> Sex </Text>
                     </View>
                     <View style={styles.diaEsemana}>
-                        <Text style={styles.dia}> {this.state.dataAtual.getDate() + 6}</Text>
+                        <Text style={styles.dia}> {this.state.sa.getDate()}</Text>
                         <Text style={styles.textSemana}> Sab </Text>
                     </View>
                 </View>
@@ -270,8 +300,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     textMes: {
+        marginTop: 20,
         backgroundColor: "#21409a",
-        fontSize: 13,
+        fontSize: 16,
         color: "#FFF",
         flex: 1
     },
@@ -342,10 +373,13 @@ const styles = StyleSheet.create({
     }, dia: {
         backgroundColor: '#FFF',
         flex: 1,
-        borderRadius: 10,
+        borderRadius: 7,
         width: 20,
+        justifyContent: 'center',
+        marginHorizontal: 14,
         alignItems: 'center',
-        marginHorizontal: 15
+        alignContent: 'center',
+        justifyContent: 'center',
     },
     textSemana: {
         fontSize: 15,
@@ -356,5 +390,8 @@ const styles = StyleSheet.create({
     },
     diaEsemana: {
         flexDirection: 'column',
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
