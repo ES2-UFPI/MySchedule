@@ -110,7 +110,7 @@ export default class Dia extends Component {
                     } else if (docs1[i].date.getDay() === 5 && docs1[i].date.getDate() === this.state.se.getDate()) {
                         sex.push(docs1[i])
                     } else if (docs1[i].date.getDay() === 6 && docs1[i].date.getDate() === this.state.sa.getDate()) {
-                        sag.push(docs1[i])
+                        sab.push(docs1[i])
                     }
                 }
             }
