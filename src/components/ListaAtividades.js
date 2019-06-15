@@ -12,6 +12,55 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Visualizar from './VisualizarAtividade'
 import firebase from 'react-native-firebase'
 //import 'moment/locale/pt-br'
+import AsyncStorage from '@react-native-community/async-storage';
+
+import PushNotification from 'react-native-push-notification'
+import { throwStatement } from '@babel/types';
+
+
+
+PushNotification.configure({
+
+  // (optional) Called when Token is generated (iOS and Android)
+  onRegister: function(token) {
+      console.log( 'TOKEN:', token );
+  },
+
+  // (required) Called when a remote or local notification is opened or received
+  onNotification: function(notification) {
+      console.log( 'NOTIFICATION:', notification );
+
+      // process the notification
+
+      // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
+      //notification.finish(PushNotificationIOS.FetchResult.NoData);
+  },
+
+  // ANDROID ONLY: GCM or FCM Sender ID (product_number) (optional - not required for local notifications, but is need to receive remote push notifications)
+  senderID: "YOUR GCM (OR FCM) SENDER ID",
+
+  // IOS ONLY (optional): default: all - Permissions to register.
+  //permissions: {
+  //    alert: true,
+   //   badge: true,
+   //   sound: true
+  //},
+
+  // Should the initial notification be popped automatically
+  // default: true
+  popInitialNotification: true,
+
+  /**
+    * (optional) default: true
+    * - Specified if permissions (ios) and token (android and ios) will requested or not,
+    * - if not, you must call PushNotificationsHandler.requestPermissions() later
+    */
+  requestPermissions: true,
+});
+
+
+
+
 
 export default class ListaAtividade extends Component {
   static navigationOptions = {
@@ -40,11 +89,36 @@ export default class ListaAtividade extends Component {
     </TouchableOpacity>
   );
 
+  validarDados = (data) => {
+    
+    let ano = data.getYear() + 1900
+    let mes = data.getMonth() + 1
+    let dia = data.getDate()
+    let x = new Date()
+
+    if ((parseInt(dia) < x.getDate() && parseInt(mes) == parseInt(x.getMonth() + 1) && parseInt(ano) == parseInt(x.getYear() + 1900))
+      || (parseInt(ano) < parseInt(x.getYear() + 1900))
+      || (parseInt(mes) < parseInt(x.getMonth() + 1) && parseInt(ano) == parseInt(x.getYear() + 1900))) {
+      
+      return false
+    }
+
+    if( (parseInt(dia) == parseInt(x.getDate()) &&  parseInt(data.getHours()) < parseInt(x.getHours()) )
+      ||(parseInt(data.getMinutes()) < parseInt(x.getMinutes()) &&  parseInt(data.getHours()) == parseInt(x.getHours()) && parseInt(dia) == parseInt(x.getDate()) )  ){
+       
+          return false
+      }
+
+    return true
+  }
+
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(querySnapshot => {
       const docs = []
+   
       querySnapshot.forEach(doc => {
         const { descricao, frequencia, dificuldade, data } = doc.data()
+        
         // alert(data)
         let date = new Date(data)
         docs.push({
@@ -55,12 +129,28 @@ export default class ListaAtividade extends Component {
           dificuldade,
           date
         })
+
+        
       })
 
       this.setState({ docs })
+
+      for(let i=0;i<docs.length;i++){
+        let a = docs[i]
+        if(this.validarDados(a.date)){
+          PushNotification.localNotificationSchedule({
+            title: a.descricao, 
+            message:"",
+            bigText : "Às "+moment(a.date).format("HH : mm")+ "\nDificuldade: "+a.dificuldade,
+            date: a.date ,
+            color: "blue",
+            actions : ' ["Concluir", "Adiar"] '
+      
+        })
+       }
+      }
     })
   }
-
   render() {
     return (
       <View style={styles.tela}>
