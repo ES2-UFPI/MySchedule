@@ -23,4 +23,3 @@ matrix:
       cache:
         directories:
           - node_modules
-      dist : trusty
