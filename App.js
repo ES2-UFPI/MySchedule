@@ -8,6 +8,7 @@ import Semanas from './src/components/semanas';
 import CadastroAtividade from './src/screens/TelaCadastroAtividade'
 import ListaAtividade from './src/components/ListaAtividades'
 import Login from './src/screens/TelaLogin'
+import Conta from './src/screens/TelaCriarConta'
 
 
 const navigator = createDrawerNavigator({
@@ -29,7 +30,17 @@ const navigator = createDrawerNavigator({
       title: 'Atividades do dia'
     },
   },
-  login: Login
+  
+  login:{
+    screen: createDrawerNavigator({
+      screen: Login,
+      conta:Conta
+
+    })
+  }
+   
+  
+  
 })
 const App = createAppContainer(navigator);
 

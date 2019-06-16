@@ -3,17 +3,16 @@ import { StyleSheet, Dimensions, TouchableOpacity, TextInput, View, Text, Image 
 
 import logo from '../imgs/logo.png';
 import firebase from 'react-native-firebase'
-
 const { width: WIDTH } = Dimensions.get('window')
 
-export default class TelaLogin extends Component 
+export default class CriarConta extends Component 
 {
     static navigationOptions = {
-        title: "Sair",
+        title: "Criar conta",
         color: "FFF",
         drawerLockMode: 'locked-open',
+     
     }
-    
     constructor (props)
     {
         super (props)
@@ -25,37 +24,19 @@ export default class TelaLogin extends Component
         }
     }
     
-    criarConta = ()=>{
-        this.props.navigation.navigate('conta')
-    }
 
-    login = async ()=>{
-        var notNull = this.state.email && this.state.password
-        if (!notNull){
-            this.setState({warning: 'Todos os campos devem ser preenchidos!'})
-            return
-        }
-        const { email, password} = this.state
-        try{
-        const user = await firebase.auth().signInWithEmailAndPassword(email,password)
-        this.setState({warning:''})
-        
+criarConta = () =>{
+    try{
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         this.props.navigation.navigate('home')
-        }catch(err){
-            this.setState({warning: 'Email e/ou senha inválido(s)!'})
-            return
-        }
+    }catch(err){
+            alert(err)
     }
-
-	render ()
-	{
-		return (
-            <View style = {Styles.container}>
-                <View style = {Styles.logoContainer}>
-                    <Image source = {logo}/>
-                    <Text style = {Styles.subtitleContainer}>Tudo ao seu tempo!</Text>
-                    <View style = {Styles.formContainer}>
-                    <TextInput
+}
+render(){
+    return(
+        <View>
+            <TextInput
                         style = {Styles.input}
                         keyboardType = 'email-address'
                         placeholder = 'Endereço de Email'
@@ -76,27 +57,17 @@ export default class TelaLogin extends Component
                         ref = {(input) => this.passwordInput = input}
                         onChangeText = {(password) => this.setState({password})}
                     />
-                    <TouchableOpacity 
-                        style = {Styles.button}
-                        onPress = {this.login}
-                    >
-                        <Text style={Styles.buttonText}>Entrar</Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity
                         style = {Styles.button}
                         onPress = {this.criarConta}>
                         <Text style={Styles.buttonText}>criar conta</Text>
                     </TouchableOpacity>
-                    
-                    </View>
-                    <Text style={Styles.message}>{this.state.warning}</Text>
-                    <Text style={Styles.footer}>MySchedule © UFPI, 2019</Text>
-                </View>
-            </View>
-		)
-	}
+        </View>
+    )
 }
+
+}
+
 
 const Styles = StyleSheet.create({
     container: 
