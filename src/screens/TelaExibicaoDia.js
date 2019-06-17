@@ -137,7 +137,7 @@ export default class Dia extends Component {
 
           <TouchableOpacity style={styles.infoDia} onPress={this.handleDateAndroidChanged} extraData={this.state.dataAtual}>
             <Text style={styles.textDia} >{moment(this.state.dataAtual).locale('pt-br').format('D')}</Text>
-            <Text style={styles.textMes} >{moment(this.state.dateAtual).locale('pt-br').format('MMMM')}</Text>
+            <Text style={styles.textMes} >{moment(this.state.dataAtual).locale('pt-br').format('MMMM')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.botaoPass} onPress={this.proximoDia}>
