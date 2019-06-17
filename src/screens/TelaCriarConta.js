@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, TouchableOpacity, TextInput, View, Text, Image } from 'react-native';
+import { StyleSheet, Dimensions, TouchableOpacity, TextInput, View, Text, Image,Alert } from 'react-native';
 
 import logo from '../imgs/logo.png';
 import firebase from 'react-native-firebase'
@@ -9,10 +9,11 @@ export default class CriarConta extends Component
 {
     static navigationOptions = {
         title: "Criar conta",
-        color: "FFF",
-        drawerLockMode: 'locked-open',
+        color: "#FFF",
+        headerStyle: { backgroundColor: '#21409a' },
+        headerTitleStyle: { color: '#FFF' },
      
-    }
+      }
     constructor (props)
     {
         super (props)
@@ -20,18 +21,39 @@ export default class CriarConta extends Component
         this.state = {
             email: '',
             password: '',
+            password2:'',
             warning: '',
         }
     }
     
 
-criarConta = () =>{
-    try{
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        this.props.navigation.navigate('home')
-    }catch(err){
-            alert(err)
+criarConta = async() =>{
+    var notNull = this.state.email && this.state.password
+    var emailRegex = new RegExp('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
+    var validEmail = emailRegex.test(this.state.email)
+    var fullPassword = this.state.password.length > 5
+    if (!notNull){
+        this.setState({warning: 'Todos os campos devem ser preenchidos!'})
+        return
     }
+    if(this.state.password!==this.state.password2){
+        this.setState({warning: 'Senhas não coincidem!'})
+        return
+    }
+    if(!validEmail || !fullPassword){
+        this.setState({warning: 'Email e/ou senha inválido(s)!'})
+        return
+    }
+    try{
+        await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+        this.setState({warning:''})
+        
+        Alert.alert("Conta criada com sucesso","")
+        this.props.navigation.goBack()
+    }catch(err){
+        this.setState({warning:String(err)})
+    }
+
 }
 render(){
     return(
@@ -57,11 +79,23 @@ render(){
                         ref = {(input) => this.passwordInput = input}
                         onChangeText = {(password) => this.setState({password})}
                     />
+                    <TextInput
+                        style = {Styles.input}
+                        placeholder = 'Confirmar Senha'
+                        placeholderTextColor = '#98a7d3'
+                        secureTextEntry
+                        returnKeyType = 'go'
+                        ref = {(input) => this.passwordInput = input}
+                        onChangeText = {(password2) => this.setState({password2})}
+                    />
                     <TouchableOpacity
                         style = {Styles.button}
                         onPress = {this.criarConta}>
                         <Text style={Styles.buttonText}>criar conta</Text>
                     </TouchableOpacity>
+                    
+                    <Text style={Styles.message}>{this.state.warning}</Text>
+                   
         </View>
     )
 }
@@ -121,6 +155,7 @@ const Styles = StyleSheet.create({
     },
     message:
     {
+        marginHorizontal:50,
         marginTop: 50,
         fontSize: 12,
         color: 'red'

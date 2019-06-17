@@ -9,7 +9,7 @@ const { width: WIDTH } = Dimensions.get('window')
 export default class TelaLogin extends Component 
 {
     static navigationOptions = {
-        title: "Sair",
+        //title: "Sair",
         color: "FFF",
         drawerLockMode: 'locked-open',
     }
@@ -39,7 +39,7 @@ export default class TelaLogin extends Component
         try{
         const user = await firebase.auth().signInWithEmailAndPassword(email,password)
         this.setState({warning:''})
-        
+      
         this.props.navigation.navigate('home')
         }catch(err){
             this.setState({warning: 'Email e/ou senha inválido(s)!'})

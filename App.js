@@ -32,11 +32,15 @@ const navigator = createDrawerNavigator({
   },
   
   login:{
-    screen: createDrawerNavigator({
+    screen: createStackNavigator({
       screen: Login,
       conta:Conta
 
-    })
+    }),
+    navigationOptions: {
+      title: 'Sair'
+    },
+
   }
    
   
