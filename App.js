@@ -7,6 +7,7 @@ import Semanas from './src/screens/TelaExibicaoSemana';
 import CadastroAtividade from './src/screens/TelaCadastroAtividade'
 import ListaAtividade from './src/components/ListaAtividades'
 import Login from './src/screens/TelaLogin'
+import Conta from './src/screens/TelaCriarConta'
 
 
 const navigator = createDrawerNavigator({
@@ -36,7 +37,23 @@ const navigator = createDrawerNavigator({
       title: 'Atividades da Semana'
     },
   },
-  login: Login
+  
+  login:{
+    screen: createStackNavigator({
+      screen: Login,
+      conta:Conta
+
+    }),
+    navigationOptions: {
+      title: 'Sair',
+      drawerLockMode: 'locked-closed',
+    
+    },
+
+  }
+   
+  
+  
 })
 const App = createAppContainer(navigator);
 
