@@ -12,6 +12,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from 'react-native-firebase'
+import Visualizar from '../components/VisualizarAtividade'
 
 export default class Dia extends Component {
   static navigationOptions = {
@@ -80,7 +81,8 @@ export default class Dia extends Component {
   }
 
   renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.atividadeContainer} onPress={this.telaAtividade}>
+    <TouchableOpacity style={styles.atividadeContainer} 
+    onPress={() => { this.setState({ showVizualizar: true }, this.setState({ desc: item.descricao }), this.setState({ dificuldade: item.dificuldade }), this.setState({ frequencia: item.frequencia }), this.setState({ data: item.date }), this.setState({ key: String(item.key) }), this.setState({ doc: item.doc })) }}>
       <Text style={styles.titulo}> {item.descricao}</Text>
       <Text style={styles.hora}> {moment(item.date).format('HH:mm')} </Text>
     </TouchableOpacity>
@@ -114,6 +116,20 @@ export default class Dia extends Component {
           <Text style={styles.tituloBarra}>
             My Schedule
           </Text>
+
+
+          <Visualizar
+          isVisible={this.state.showVizualizar}
+          style={styles.visualizar}
+          cancelar={() => this.setState({ showVizualizar: false })}
+          desc={this.state.desc}
+          dificuldade={this.state.dificuldade}
+          frequencia={this.state.frequencia}
+          data={this.state.data}
+          chave={this.state.key}
+          doc={this.state.doc}
+        >
+        </Visualizar>
 
           <TouchableOpacity style={styles.botaoPass} onPress={this.diaAnterio}>
             <Icon name='angle-left' size={24} color="#FFF"> </Icon>

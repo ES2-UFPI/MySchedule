@@ -13,9 +13,12 @@ import {
 import moment from 'moment'
 import { Dropdown } from 'react-native-material-dropdown'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import AsyncStorage from '@react-native-community/async-storage';
 //import 'moment/locale/pt-br'
+import PushNotification from 'react-native-push-notification'
 
 import firebase from 'react-native-firebase'
+import { objectExpression } from '@babel/types';
 
 class Frequencia extends Component {
   constructor(props) {
@@ -170,6 +173,7 @@ export default class CadastroAtividade extends Component {
           alert('erro')
       })
 
+     //AsyncStorage.setItem("descricao",JSON.stringify(obj))
       this.setState({ ...estadoInicial })
       this.props.navigation.goBack()
     }
