@@ -11,7 +11,7 @@ export default class TelaLogin extends Component
     static navigationOptions = {
         //title: "Sair",
         color: "FFF",
-        drawerLockMode: 'locked-open',
+        
     }
     
     constructor (props)

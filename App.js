@@ -38,7 +38,9 @@ const navigator = createDrawerNavigator({
 
     }),
     navigationOptions: {
-      title: 'Sair'
+      title: 'Sair',
+      drawerLockMode: 'locked-closed',
+    
     },
 
   }
